@@ -14,12 +14,12 @@
 
 class BulletMLNode;
 
-class BulletMLParserTinyXML : public BulletMLParser {
+class BULLETML_API BulletMLParserTinyXML : public BulletMLParser {
 public:
-    DECLSPEC BulletMLParserTinyXML(const std::string& filename);
-    DECLSPEC virtual ~BulletMLParserTinyXML();
+    BulletMLParserTinyXML(const std::string& filename);
+    virtual ~BulletMLParserTinyXML();
 
-    DECLSPEC virtual void parse();
+    virtual void parse();
 
 protected:
 	void parseImpl(TiXmlDocument& doc);
