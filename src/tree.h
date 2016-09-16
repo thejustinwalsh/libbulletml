@@ -1,4 +1,4 @@
-/// ��ʓI�ȃc���[�B�Đ��Y����
+/// 一般的なツリー。再生産だね
 
 #ifndef TREE_H_
 #define TREE_H_
@@ -7,22 +7,22 @@
 
 #include <list>
 
-/// �c���[�̃N���X
+/// ツリーのクラス
 /**
- * �c���[���Ă̂̓R���e�i�����݂��Ȃ��W���̂ł���Ǝv���B
- * ��ŁA�m�[�h���Ă���������тт��N���X�̏W�����R���e�i�ł���ƁB
- * �ŃC���^�[�t�F�C�X�́A
+ * ツリーってのはコンテナが存在しない集合体であると思う。
+ * んで、ノードっていう属性を帯びたクラスの集合がコンテナであると。
+ * でインターフェイスは、
  * class YourNode : public TreeNode<YourNode>;
- * ���ċ���B
- * �|�C���^�Ǘ���O��Ƃ��Ă���B
- * �C���X�^���X�̊Ǘ��͕��i�͂��Ȃ����ǁA
- * setReleaseDuty ���Ă΂ꂽ�m�[�h���j�󂳂��ƁA
- * ����̑��q�ȉ��̐���͑S�Ĕj�󂳂��B
+ * って具合い。
+ * ポインタ管理を前提としている。
+ * インスタンスの管理は普段はしないけど、
+ * setReleaseDuty を呼ばれたノードが破壊されると、
+ * それの息子以下の世代は全て破壊される。
  */
 template <class C_>
 class TreeNode {
 public:
-    // ������e���v���[�g�����ō�����������݌v�ɂ������̂���
+    // これをテンプレート引数で差し換えうる設計にしたいのだが
     typedef std::list<C_*> Children;
     typedef typename Children::iterator ChildIterator;
     typedef typename Children::const_iterator ConstChildIterator;

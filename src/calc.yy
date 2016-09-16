@@ -1,4 +1,4 @@
-/* ��ֵ�ˡ���� -- calc */
+/* 中間記法電卓 -- calc */
 
 %{
 typedef double NumType;
@@ -39,16 +39,16 @@ namespace {
 
 %}
 
-/* BISON��� */
+/* BISON宣言 */
 %token NUM RAND RANK PARAM
 %left '-' '+'
 %left '*' '/'
-%left NEG     /* negation--ñ��ޥ��ʥ� */
-%right '^'    /* �٤���ؿ�        */
+%left NEG     /* negation--単項マイナス */
+%right '^'    /* べき乗関数        */
 
-/* ʸˡ��§��³�� */
+/* 文法規則が続く */
 %%
-input:    /* ��ʸ���� */
+input:    /* 空文字列 */
         | input line
 ;
 
@@ -99,9 +99,9 @@ exp:    NUM {
 %%
 
 /**
- * ������ϴ�ϡ����ͤ��ɤ�С�double�����ͤ򥹥��å����Ѥ��
- * �ȡ������NUM�פ��֤������Ͱʳ����ɤ�С�����ʸ���Υ������������֤���
- * ����ȥ��֤��ɤ����Ф���롣�ե����뤬������0���֤���
+ * 字句解析器は、数値を読めば、double型の値をスタックに積んで
+ * トークン「NUM」を返し、数値以外を読めば、その文字のアスキー符号を返す。
+ * 空白とタブは読み飛ばされる。ファイルが終わると0を返す。
  */
 
 #include <ctype.h>
@@ -111,10 +111,10 @@ int yylex ()
 {
 	int c;
 
-	/* ��������ɤ����Ф�  */
+	/* 空白類を読み飛ばす  */
 	while ((c = *(yyinStr++)) == ' ' || c == '\t')
 		;
-	/* ���ͤ��������   */
+	/* 数値を処理する   */
 	if (c == '.' || isdigit (c))
     {
 		yyinStr--;
@@ -123,7 +123,7 @@ int yylex ()
 		return NUM;
     }
 
-	// �ѿ���������� */
+	// 変数を処理する */
 	if (c == '$') {
 		if (strncmp(yyinStr, "rand", 4) == 0) {
 			yyinStr += 4;
@@ -141,10 +141,10 @@ int yylex ()
 		}
 	}
 
-	/* �ե�����ν������������  */
+	/* ファイルの終わりを処理する  */
 	if (c == '\0')
 		return 0;
-	/* 1ʸ�����֤� */
+	/* 1文字を返す */
 	return c;
 }
 
@@ -159,4 +159,3 @@ std::auto_ptr<CalcFormula> calc(const std::string& str) {
 	yyparse();
 	return std::auto_ptr<CalcFormula>(formula);
 }
-

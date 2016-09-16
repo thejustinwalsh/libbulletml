@@ -1,6 +1,6 @@
-/// BulletML ‚Ìƒp[ƒT
+/// BulletML ã®ãƒ‘ãƒ¼ã‚µ
 /**
- * c++ —p RELAX ‚ª–³‚©‚Á‚½‚Ì‚Å‚Ü‚ ©•ª‚Åì‚é‚±‚Æ‚É
+ * c++ ç”¨ RELAX ãŒç„¡ã‹ã£ãŸã®ã§ã¾ã‚è‡ªåˆ†ã§ä½œã‚‹ã“ã¨ã«
  */
 
 #ifndef BULLETMLPARSER_H_
@@ -29,8 +29,8 @@ public:
 
 public:
     /**
-     * BulletML ‚Íd—lãƒcƒŠ[\‘¢‚Ìª‚Á‚±‚ğæ‚ê‚é•K—v‚Í‚È‚­
-     * ƒ‰ƒxƒ‹‚©‚ç‚±‚ê‚ç‚Ì‚İæ‚ê‚ê‚Î—Ç‚¢
+     * BulletML ã¯ä»•æ§˜ä¸Šãƒ„ãƒªãƒ¼æ§‹é€ ã®æ ¹ã£ã“ã‚’å–ã‚Œã‚‹å¿…è¦ã¯ãªã
+     * ãƒ©ãƒ™ãƒ«ã‹ã‚‰ã“ã‚Œã‚‰ã®ã¿å–ã‚Œã‚Œã°è‰¯ã„
      */
     //@{
     DECLSPEC BulletMLNode* getBulletRef(int id);
@@ -50,7 +50,7 @@ protected:
     void addAttribute(const MyAttributes& attr, BulletMLNode* elem);
 
 protected:
-    /// ‚±‚ê‚Ígcc‚Ìƒo[ƒWƒ‡ƒ“ŠÔ‚ÌŒİŠ·‚Ì‚½‚ß‚È‚Ì‚¾‚ª
+    /// ã“ã‚Œã¯gccã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³é–“ã®äº’æ›ã®ãŸã‚ãªã®ã ãŒ
     template <class Char_>
     std::string uc2string(Char_* src, size_t len = std::string::npos);
 
@@ -70,7 +70,7 @@ protected:
     bool isHorizontal_;
 
 protected:
-	/// ˆê“I‚È“±“ü
+	/// ä¸€æ™‚çš„ãªå°å…¥
 	void setName(const std::string& name) { name_ = name; }
 	std::string name_;
 public:

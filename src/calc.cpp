@@ -1017,9 +1017,9 @@ yyerrhandle:
 
 
 /**
- * �����͊�́A���l��ǂ߂΁Adouble�^�̒l���X�^�b�N�ɐς��
- * �g�[�N���uNUM�v��Ԃ��A���l�ȊO��ǂ߂΁A���̕����̃A�X�L�[������Ԃ��B
- * �󔒂ƃ^�u�͓ǂݔ�΂����B�t�@�C�����I����0��Ԃ��B
+ * 字句解析器は、数値を読めば、double型の値をスタックに積んで
+ * トークン「NUM」を返し、数値以外を読めば、その文字のアスキー符号を返す。
+ * 空白とタブは読み飛ばされる。ファイルが終わると0を返す。
  */
 
 #include <ctype.h>
@@ -1029,10 +1029,10 @@ int yylex ()
 {
 	int c;
 
-	/* �󔒗ނ�ǂݔ�΂�  */
+	/* 空白類を読み飛ばす  */
 	while ((c = *(yyinStr++)) == ' ' || c == '\t')
 		;
-	/* ���l����������   */
+	/* 数値を処理する   */
 	if (c == '.' || isdigit (c))
     {
 		yyinStr--;
@@ -1041,7 +1041,7 @@ int yylex ()
 		return NUM;
     }
 
-	// �ϐ����������� */
+	// 変数を処理する */
 	if (c == '$') {
 		if (strncmp(yyinStr, "rand", 4) == 0) {
 			yyinStr += 4;
@@ -1059,10 +1059,10 @@ int yylex ()
 		}
 	}
 
-	/* �t�@�C���̏I������������  */
+	/* ファイルの終わりを処理する  */
 	if (c == '\0')
 		return 0;
-	/* 1������Ԃ� */
+	/* 1文字を返す */
 	return c;
 }
 

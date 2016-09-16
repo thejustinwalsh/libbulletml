@@ -1,6 +1,6 @@
-/// BulletML �̃p�[�T�E�c���[ by tinyxml
+/// BulletML のパーサ・ツリー by tinyxml
 /**
- * tinyxml�ɂ��BulletML�̃p�[�T
+ * tinyxmlによるBulletMLのパーサ
  */
 
 #ifndef BULLETMLPARSER_TINYXML_H_

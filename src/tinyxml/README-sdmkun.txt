@@ -12,11 +12,11 @@ http://crystal.sourceforge.net/drupal/
 
 --- in japanese ---
 
-���� TinyXML �ϥ��ꥸ�ʥ�ΥС������ǤϤʤ��ơ�
-�䤬�����ä���ΤǤ���
-���̡����� TinyXML ��Ȥ��٤�����ʤ��ơ��ʲ��Τ�Ȥ��٤��Ǥ���
+この TinyXML はオリジナルのバージョンではなくて、
+私がいじったものです。
+普通、この TinyXML を使うべきじゃなくて、以下のを使うべきです。
 http://www.sourceforge.net/projects/tinyxml
 
-��� "Crystal Space 3D" �Υ����������ɤ򻲹ͤ�
-CDATA ����������б���Ԥ��ޤ�����
+私は "Crystal Space 3D" のソースコードを参考に
+CDATA セクション対応を行いました。
 http://crystal.sourceforge.net/drupal/

@@ -38,7 +38,7 @@ protected:
 	bool isValidate_;
 };
 
-/// xy‚Ì‰Šú’lEI’l‚©‚ç”CˆÓ‚Ìx‚É‘Î‚·‚éy‚ÌüŒ`•âŠÔ‚ğ“¾‚éƒNƒ‰ƒX
+/// xyã®åˆæœŸå€¤ãƒ»çµ‚å€¤ã‹ã‚‰ä»»æ„ã®xã«å¯¾ã™ã‚‹yã®ç·šå½¢è£œé–“ã‚’å¾—ã‚‹ã‚¯ãƒ©ã‚¹
 template <class X_ = double, class Y_ = double>
 class LinearFunc {
 public:
@@ -70,37 +70,37 @@ public:
     explicit BulletMLRunnerImpl(BulletMLState* state, BulletMLRunner* runner);
     virtual ~BulletMLRunnerImpl();
 
-	/// Às‚·‚é
+	/// å®Ÿè¡Œã™ã‚‹
     void run();
 
 public:
-	/// Às‚ªI—¹‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	/// å®Ÿè¡ŒãŒçµ‚äº†ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	bool isEnd() const {
 		return end_;
 	}
 
 public:
-    /// ’e‚Ì•ûŒü•ÏX‚ğ“o˜^‚µA©‘O‚ÅŠeƒ^[ƒ“•ÏX‚·‚é
+    /// å¼¾ã®æ–¹å‘å¤‰æ›´ã‚’ç™»éŒ²ã—ã€è‡ªå‰ã§å„ã‚¿ãƒ¼ãƒ³å¤‰æ›´ã™ã‚‹
 	virtual void calcChangeDirection(double direction, int term, bool seq);
-    /// ’e‚Ì‘¬“x•ÏX‚ğ“o˜^‚µA©‘O‚ÅŠeƒ^[ƒ“•ÏX‚·‚é
+    /// å¼¾ã®é€Ÿåº¦å¤‰æ›´ã‚’ç™»éŒ²ã—ã€è‡ªå‰ã§å„ã‚¿ãƒ¼ãƒ³å¤‰æ›´ã™ã‚‹
 	virtual void calcChangeSpeed(double speed, int term);
-    /// ’e‚Ì‰Á‘¬‚ğ“o˜^‚µA©‘O‚ÅŠeƒ^[ƒ“•ÏX‚·‚é
+    /// å¼¾ã®åŠ é€Ÿã‚’ç™»éŒ²ã—ã€è‡ªå‰ã§å„ã‚¿ãƒ¼ãƒ³å¤‰æ›´ã™ã‚‹
 	/**
-	 * @todo horizontal, vertical ‚Ì type ‚Í–¢À‘•‚Å‚·B
+	 * @todo horizontal, vertical ã® type ã¯æœªå®Ÿè£…ã§ã™ã€‚
 	 */
 	virtual void calcAccelX(double vertical, int term,
 							BulletMLNode::Type type);
-    /// ’e‚Ì‰Á‘¬‚ğ“o˜^‚µA©‘O‚ÅŠeƒ^[ƒ“•ÏX‚·‚é
+    /// å¼¾ã®åŠ é€Ÿã‚’ç™»éŒ²ã—ã€è‡ªå‰ã§å„ã‚¿ãƒ¼ãƒ³å¤‰æ›´ã™ã‚‹
 	/**
-	 * @todo horizontal, vertical ‚Ì type ‚Í–¢À‘•‚Å‚·B
+	 * @todo horizontal, vertical ã® type ã¯æœªå®Ÿè£…ã§ã™ã€‚
 	 */
 	virtual void calcAccelY(double horizontal, int term,
 							BulletMLNode::Type type);
 
 protected:
 	/**
-	 * –{“–‚É‹““®‚ª‹C‚É“ü‚ç‚È‚¢ê‡‚Í‰¼‘zŠÖ”‰»‚µ‚ÄA
-	 * ‚±‚ê‚ç‚ÌƒI[ƒo[ƒ‰ƒCƒh‚àl‚¦‚Ä‚­‚¾‚³‚¢B
+	 * æœ¬å½“ã«æŒ™å‹•ãŒæ°—ã«å…¥ã‚‰ãªã„å ´åˆã¯ä»®æƒ³é–¢æ•°åŒ–ã—ã¦ã€
+	 * ã“ã‚Œã‚‰ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã‚‚è€ƒãˆã¦ãã ã•ã„ã€‚
 	 */
 	//@{
     void runBullet();

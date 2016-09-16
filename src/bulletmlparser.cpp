@@ -5,7 +5,7 @@
 
 namespace {
 
-    /// “à•”‚Ì‚İ‚Åg—p‚·‚éƒNƒ‰ƒXB
+    /// å†…éƒ¨ã®ã¿ã§ä½¿ç”¨ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 	class IDPool {
 	public:
 		static int getID(BulletMLNode::Name domain, const std::string& key) {
@@ -51,7 +51,7 @@ BulletMLParser::BulletMLParser()
 {}
 
 BulletMLParser::~BulletMLParser() {
-	// BulletMLNode ‚Íƒ‹[ƒgƒm[ƒh‚¾‚¯”j‰ó‚·‚ê‚Î—Ç‚¢
+	// BulletMLNode ã¯ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰ã ã‘ç ´å£Šã™ã‚Œã°è‰¯ã„
 	delete bulletml_;
 }
 
@@ -80,7 +80,7 @@ BulletMLNode* BulletMLParser::getFireRef(int id) {
 }
 
 BulletMLNode* BulletMLParser::addContent(const std::string& name) {
-	// ƒ‹[ƒgƒm[ƒh‚Í•Êˆ—
+	// ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰ã¯åˆ¥å‡¦ç†
 	if (name == "bulletml") {
 		bulletml_ = new BulletMLNode(name);
 		return bulletml_;

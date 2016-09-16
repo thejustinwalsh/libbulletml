@@ -1,6 +1,6 @@
-/// BulletML�c���[�B
+/// BulletMLツリー。
 /**
- * BulletML �ɓ������Ă��Ĕ��ɂ��񂿂��������̂������B
+ * BulletML に特化していて非常にいんちきくさいのが特徴。
  */
 
 #ifndef BULLETMLTREE_H_
@@ -59,7 +59,7 @@ public:
 
 
 
-    /// �q���̒��Ɏw�肵�����O�Ɉ�v������̂����邩�ǂ���
+    /// 子孫の中に指定した名前に一致するものがあるかどうか
     DECLSPEC bool findNode(Name name) const;
 
     DECLSPEC BulletMLNode* next();

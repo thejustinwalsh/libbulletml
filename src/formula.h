@@ -1,4 +1,4 @@
-/// �����N���X
+/// 数式クラス
 
 #ifndef FORMULA_H_
 #define FORMULA_H_
@@ -36,9 +36,9 @@ public:
 		delete rhs_;
 	}
 
-	/// public �����ǌĂ΂Ȃ��ŉ������B
+	/// public だけど呼ばないで下さい。
 	/**
-	 * @todo yacc �̎g�������𒲂ׂāA����� private ��
+	 * @todo yacc の使いかたを調べて、これを private に
 	 */
 	//@{
 	DECLSPEC explicit Formula(ANumber* val)

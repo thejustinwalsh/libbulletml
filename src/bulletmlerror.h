@@ -5,7 +5,7 @@
 
 #include <stdexcept>
 
-/// ‚³‚·‚ª‚É‚à‚¤‚¿‚å‚Á‚Æ[À‚³‚¹‚ñ‚Æ‚Ë‚¦
+/// ã•ã™ãŒã«ã‚‚ã†ã¡ã‚‡ã£ã¨å……å®Ÿã•ã›ã‚“ã¨ã­ãˆ
 class BulletMLError : public std::runtime_error {
 public:
 	DECLSPEC BulletMLError(const std::string& msg)
