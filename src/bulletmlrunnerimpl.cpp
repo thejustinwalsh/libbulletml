@@ -459,9 +459,9 @@ void BulletMLRunnerImpl::calcChangeDirection(double direction, int term,
 	double dirFirst = runner_->getBulletDirection();
 
 	if (seq) {
-		changeDir_ = new LinearFunc<int, double>
+		changeDir_.reset(new LinearFunc<int, double>
 					  (actTurn_, finalTurn,
-					   dirFirst, dirFirst + direction * term);
+					   dirFirst, dirFirst + direction * term));
 	}
 	else {
 		double dirSpace;
@@ -474,8 +474,8 @@ void BulletMLRunnerImpl::calcChangeDirection(double direction, int term,
 		if (abs(dirSpace1) < abs(dirSpace2)) dirSpace = dirSpace1;
 		else dirSpace = dirSpace2;
 
-		changeDir_ = new LinearFunc<int, double>
-					  (actTurn_, finalTurn, dirFirst, dirFirst + dirSpace);
+		changeDir_.reset(new LinearFunc<int, double>
+					  (actTurn_, finalTurn, dirFirst, dirFirst + dirSpace));
 	}
 }
 
@@ -484,8 +484,8 @@ void BulletMLRunnerImpl::calcChangeSpeed(double speed, int term) {
 
 	double spdFirst = runner_->getBulletSpeed();
 
-	changeSpeed_ = new LinearFunc<int, double>
-				  (actTurn_, finalTurn, spdFirst, speed);
+	changeSpeed_.reset(new LinearFunc<int, double>
+				  (actTurn_, finalTurn, spdFirst, speed));
 }
 
 void BulletMLRunnerImpl::calcAccelY(double horizontal, int term,
@@ -506,8 +506,8 @@ void BulletMLRunnerImpl::calcAccelY(double horizontal, int term,
 		finalSpd = horizontal;
 	}
 
-	accely_ = new LinearFunc<int, double>
-				  (actTurn_, finalTurn, firstSpd, finalSpd);
+	accely_.reset(new LinearFunc<int, double>
+				  (actTurn_, finalTurn, firstSpd, finalSpd));
 }
 
 void BulletMLRunnerImpl::calcAccelX(double vertical, int term,
@@ -528,8 +528,8 @@ void BulletMLRunnerImpl::calcAccelX(double vertical, int term,
 		finalSpd = vertical;
 	}
 
-	accelx_ = new LinearFunc<int, double>
-				  (actTurn_, finalTurn, firstSpd, finalSpd);
+	accelx_.reset(new LinearFunc<int, double>
+				  (actTurn_, finalTurn, firstSpd, finalSpd));
 }
 
 void BulletMLRunnerImpl::runVanish() {
