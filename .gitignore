@@ -1,0 +1,8 @@
+# Generated
+.premake
+*.xcworkspace
+*.xcodeproj
+
+# Binaries
+bin
+ 
