@@ -7,11 +7,11 @@
 #ifndef BULLETRUNNER_H_
 #define BULLETRUNNER_H_
 
-#include "bulletmltree.h"
 #include "bulletmlcommon.h"
+#include "bulletmltree.h"
 
-#include <vector>
 #include <cstdlib>
+#include <vector>
 
 class BulletMLParser;
 class BulletMLNode;
@@ -20,22 +20,23 @@ class BulletMLRunnerImpl;
 typedef std::vector<double> BulletMLParameter;
 
 /// BulletMLRunner が状態伝達に使用するクラス
-class BULLETML_API BulletMLState {
+class BULLETML_API BulletMLState
+{
 public:
-	BulletMLState(BulletMLParser* bulletml,
-						   const std::vector<BulletMLNode*>& node,
-						   std::shared_ptr<BulletMLParameter> para)
-		: bulletml_(bulletml), node_(node.begin(), node.end()), para_(para) {}
+    BulletMLState(BulletMLParser* bulletml, const std::vector<BulletMLNode*>& node,
+                  std::shared_ptr<BulletMLParameter> para)
+        : bulletml_(bulletml), node_(node.begin(), node.end()), para_(para)
+    {
+    }
 
-	BulletMLParser* getBulletML() { return bulletml_; }
-	const std::vector<BulletMLNode*>& getNode() const { return node_; }
-	std::shared_ptr<BulletMLParameter> getParameter() { return para_; }
+    BulletMLParser* getBulletML() { return bulletml_; }
+    const std::vector<BulletMLNode*>& getNode() const { return node_; }
+    std::shared_ptr<BulletMLParameter> getParameter() { return para_; }
 
 private:
-	BulletMLParser* bulletml_;
-	std::vector<BulletMLNode*> node_;
-	std::shared_ptr<BulletMLParameter> para_;
-
+    BulletMLParser* bulletml_;
+    std::vector<BulletMLNode*> node_;
+    std::shared_ptr<BulletMLParameter> para_;
 };
 
 /// BulletML を実行するクラス
@@ -49,110 +50,109 @@ private:
  * </pre>
  */
 
-class BULLETML_API BulletMLRunner {
+class BULLETML_API BulletMLRunner
+{
 public:
-	explicit BulletMLRunner(BulletMLParser* bulletml);
+    explicit BulletMLRunner(BulletMLParser* bulletml);
     explicit BulletMLRunner(BulletMLState* state);
     virtual ~BulletMLRunner();
 
-	/// 実行する
+    /// 実行する
     void run();
 
 public:
-	/// 実行が終了しているかどうか
-	bool isEnd() const;
+    /// 実行が終了しているかどうか
+    bool isEnd() const;
 
 public:
-	// ----- 絶対実装しなければならない関数群の始まり -----
-	//@{
-	/// この弾の角度を求める
-	/**
-	 * @return 角度を度単位で、上方向 0 で時計周りで返す
-	 */
-	virtual double getBulletDirection() =0;
-	/// この弾から自機を狙う角度を求める
-	/**
-	 * @return 角度を度単位で、上方向 0 で時計周りで返す
-	 */
-	virtual double getAimDirection() =0;
-	/// この弾の速度を求める
-	virtual double getBulletSpeed() =0;
-	/// デフォルトの速度を求める
-	virtual double getDefaultSpeed() =0;
-	/// ランクを求める
-	/**
-	 * @return 0 から 1 までの実数
-	 */
-	virtual double getRank() =0;
-	/// action を持たない弾を作る
-	virtual void createSimpleBullet(double direction, double speed) =0;
-	/// action を持つ弾を作る
-	/**
-	 * @param state
-	 * 新しい弾の BulletMLRunner のコンストラクタに渡すこと。
-	 * もし渡さないのであれば、delete で解放しなければならない。
-	 */
-	virtual void createBullet(BulletMLState* state,
-									   double direction, double speed) =0;
-	/// 弾の基準となるターンの値を返す、通常はフレーム数
-	/**
-	 * @return
-	 * ゲームごとの基準でオーダーは変更して構いませんが、
-	 * 負数は許されません。
-	 * xml データ上で、wait と term のオーダーが揃っていれば問題ありません。
-	 */
-	virtual int getTurn() =0;
-	/// 死ぬ
-	virtual void doVanish() =0;
-	//@}
-	// ----- 絶対実装しなければならない関数群の終わり -----
-
-	// ----- 必要があれば実装する関数群の始まり -----
-   	//@{
-	/// 弾の方向を指定した方向に変更する
-	virtual void doChangeDirection(double) {}
-	/// 弾の速度を指定した値に変更する
-	virtual void doChangeSpeed(double) {}
-	/// accel に対するインターフェイス
-	/**
-	 * @todo
-	 * horizontal, vertical の type は未実装です。
-	 * どれも absolute になってしまいます。
-	 */
-	virtual void doAccelX(double) {}
-	/// accel に対するインターフェイス
-	/**
-	 * @todo
-	 * horizontal, vertical の type は未実装です。
-	 * どれも absolute になってしまいます。
-	 */
-	virtual void doAccelY(double) {}
-	/// 弾の速さの X 方向成分を返します
-	/**
-	 * accel を使う場合はオーバーライドして下さい
- 	 */
-	virtual double getBulletSpeedX() { return 0; }
-	/// 弾の速さの Y 方向成分を返します
-	/**
-	 * accel を使う場合はオーバーライドして下さい
- 	 */
-	virtual double getBulletSpeedY() { return 0; }
+    // ----- 絶対実装しなければならない関数群の始まり -----
+    //@{
+    /// この弾の角度を求める
+    /**
+     * @return 角度を度単位で、上方向 0 で時計周りで返す
+     */
+    virtual double getBulletDirection() = 0;
+    /// この弾から自機を狙う角度を求める
+    /**
+     * @return 角度を度単位で、上方向 0 で時計周りで返す
+     */
+    virtual double getAimDirection() = 0;
+    /// この弾の速度を求める
+    virtual double getBulletSpeed() = 0;
+    /// デフォルトの速度を求める
+    virtual double getDefaultSpeed() = 0;
+    /// ランクを求める
+    /**
+     * @return 0 から 1 までの実数
+     */
+    virtual double getRank() = 0;
+    /// action を持たない弾を作る
+    virtual void createSimpleBullet(double direction, double speed) = 0;
+    /// action を持つ弾を作る
+    /**
+     * @param state
+     * 新しい弾の BulletMLRunner のコンストラクタに渡すこと。
+     * もし渡さないのであれば、delete で解放しなければならない。
+     */
+    virtual void createBullet(BulletMLState* state, double direction, double speed) = 0;
+    /// 弾の基準となるターンの値を返す、通常はフレーム数
+    /**
+     * @return
+     * ゲームごとの基準でオーダーは変更して構いませんが、
+     * 負数は許されません。
+     * xml データ上で、wait と term のオーダーが揃っていれば問題ありません。
+     */
+    virtual int getTurn() = 0;
+    /// 死ぬ
+    virtual void doVanish() = 0;
     //@}
-	// ----- 必要があれば実装する関数群の終わり -----
+    // ----- 絶対実装しなければならない関数群の終わり -----
 
-	/// 乱数を返す
-	/**
-	 * 見てのとおり、デフォルトでは std::rand が用いられます。
-	 */
-	virtual double getRand() { return (double)rand() / RAND_MAX; }
+    // ----- 必要があれば実装する関数群の始まり -----
+    //@{
+    /// 弾の方向を指定した方向に変更する
+    virtual void doChangeDirection(double) {}
+    /// 弾の速度を指定した値に変更する
+    virtual void doChangeSpeed(double) {}
+    /// accel に対するインターフェイス
+    /**
+     * @todo
+     * horizontal, vertical の type は未実装です。
+     * どれも absolute になってしまいます。
+     */
+    virtual void doAccelX(double) {}
+    /// accel に対するインターフェイス
+    /**
+     * @todo
+     * horizontal, vertical の type は未実装です。
+     * どれも absolute になってしまいます。
+     */
+    virtual void doAccelY(double) {}
+    /// 弾の速さの X 方向成分を返します
+    /**
+     * accel を使う場合はオーバーライドして下さい
+     */
+    virtual double getBulletSpeedX() { return 0; }
+    /// 弾の速さの Y 方向成分を返します
+    /**
+     * accel を使う場合はオーバーライドして下さい
+     */
+    virtual double getBulletSpeedY() { return 0; }
+    //@}
+    // ----- 必要があれば実装する関数群の終わり -----
+
+    /// 乱数を返す
+    /**
+     * 見てのとおり、デフォルトでは std::rand が用いられます。
+     */
+    virtual double getRand() { return (double) rand() / RAND_MAX; }
 
 private:
-	/// BulletMLRunnerImpl をオーバーライドする場合、これもオーバーライドする
-	virtual BulletMLRunnerImpl* makeImpl(BulletMLState* state);
+    /// BulletMLRunnerImpl をオーバーライドする場合、これもオーバーライドする
+    virtual BulletMLRunnerImpl* makeImpl(BulletMLState* state);
 
 protected:
-	std::vector<BulletMLRunnerImpl*> impl_;
-
+    std::vector<BulletMLRunnerImpl*> impl_;
 };
 
 #endif // ! BULLETRUNNER_H_

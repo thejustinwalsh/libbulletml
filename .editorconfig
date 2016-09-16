@@ -1,0 +1,15 @@
+# http://EditorConfig.org
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[*.{h,cc,lua}]
+indent_style = spaces
+indent_size = 4
+trim_trailing_whitespace = false
+
+[*.md]
+trim_trailing_whitespace = false

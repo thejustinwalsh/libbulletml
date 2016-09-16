@@ -6,15 +6,15 @@ typedef double NumType;
 #define YYSTYPE double
 #define YYERROR_VERBOSE
 
-#include <cmath>
 #include <cctype>
+#include <cmath>
 
-#include <vector>
 #include <sstream>
+#include <vector>
 
 #include "calc.h"
-#include "formula.h"
 #include "formula-variables.h"
+#include "formula.h"
 
 int yyerror(char* s);
 int yylex();
@@ -28,13 +28,14 @@ typedef Rank<NumType> CalcRank;
 typedef Param<NumType> CalcParam;
 typedef Operator CalcOperator;
 
-namespace {
-	CalcFormula* formula;
-	std::vector<CalcFormula*> formulas;
+namespace
+{
+    CalcFormula* formula;
+    std::vector<CalcFormula*> formulas;
 
-	CalcFormula* f(double d) { return formulas[(int)d]; }
+    CalcFormula* f(double d) { return formulas[(int) d]; }
 
-	int paramId;
+    int paramId;
 }
 
 %}
@@ -107,55 +108,56 @@ exp:    NUM {
 #include <ctype.h>
 #include <stdio.h>
 
-int yylex ()
+int yylex()
 {
-	int c;
+    int c;
 
-	/* 空白類を読み飛ばす  */
-	while ((c = *(yyinStr++)) == ' ' || c == '\t')
-		;
-	/* 数値を処理する   */
-	if (c == '.' || isdigit (c))
-    {
-		yyinStr--;
-		sscanf (yyinStr, "%lf", &yylval);
-		while ((c = *(++yyinStr)) == '.' || isdigit(c)) {}
-		return NUM;
+    /* 空白類を読み飛ばす  */
+    while ((c = *(yyinStr++)) == ' ' || c == '\t')
+        ;
+    /* 数値を処理する   */
+    if (c == '.' || isdigit(c)) {
+        yyinStr--;
+        sscanf(yyinStr, "%lf", &yylval);
+        while ((c = *(++yyinStr)) == '.' || isdigit(c)) {
+        }
+        return NUM;
     }
 
-	// 変数を処理する */
-	if (c == '$') {
-		if (strncmp(yyinStr, "rand", 4) == 0) {
-			yyinStr += 4;
-			return RAND;
-		}
-		else if (strncmp(yyinStr, "rank", 4) == 0) {
-		    yyinStr += 4;
-			return RANK;
+    // 変数を処理する */
+    if (c == '$') {
+        if (strncmp(yyinStr, "rand", 4) == 0) {
+            yyinStr += 4;
+            return RAND;
         }
-		else {
-			std::istringstream iss(std::string(yyinStr).substr(0, 1));
-			iss >> paramId;
-			yyinStr++;
-			return PARAM;
-		}
-	}
+        else if (strncmp(yyinStr, "rank", 4) == 0) {
+            yyinStr += 4;
+            return RANK;
+        }
+        else {
+            std::istringstream iss(std::string(yyinStr).substr(0, 1));
+            iss >> paramId;
+            yyinStr++;
+            return PARAM;
+        }
+    }
 
-	/* ファイルの終わりを処理する  */
-	if (c == '\0')
-		return 0;
-	/* 1文字を返す */
-	return c;
+    /* ファイルの終わりを処理する  */
+    if (c == '\0') return 0;
+    /* 1文字を返す */
+    return c;
 }
 
-int yyerror(char* s) {
-	printf("yyerror: %s\n", s);
-	return 0;
+int yyerror(char* s)
+{
+    printf("yyerror: %s\n", s);
+    return 0;
 }
 
-std::unique_ptr<CalcFormula> calc(const std::string& str) {
-	std::string fml = str + '\n';
-	yyinStr = fml.c_str();
-	yyparse();
-	return std::unique_ptr<CalcFormula>(formula);
+std::unique_ptr<CalcFormula> calc(const std::string& str)
+{
+    std::string fml = str + '\n';
+    yyinStr = fml.c_str();
+    yyparse();
+    return std::unique_ptr<CalcFormula>(formula);
 }

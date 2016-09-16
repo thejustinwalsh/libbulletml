@@ -6,15 +6,16 @@
 #ifndef BULLETMLPARSER_H_
 #define BULLETMLPARSER_H_
 
-#include "bulletmltree.h"
 #include "bulletmlcommon.h"
+#include "bulletmltree.h"
 
 #include <string>
 #include <vector>
 
 #include <stdio.h>
 
-class BULLETML_API BulletMLParser {
+class BULLETML_API BulletMLParser
+{
 protected:
     typedef std::vector<std::string> MyAttributes;
     typedef MyAttributes::const_iterator MyAttributeIte;
@@ -24,8 +25,8 @@ public:
     virtual ~BulletMLParser();
 
 public:
-	void build();
-    virtual void parse() =0;
+    void build();
+    virtual void parse() = 0;
 
 public:
     /**
@@ -38,11 +39,9 @@ public:
     BulletMLNode* getFireRef(int id);
     //@}
 
-	const std::vector<BulletMLNode*>& getTopActions() const {
-		return topActions_;
-	}
+    const std::vector<BulletMLNode*>& getTopActions() const { return topActions_; }
 
-	void setHorizontal() { isHorizontal_ = true; }
+    void setHorizontal() { isHorizontal_ = true; }
     bool isHorizontal() const { return isHorizontal_; }
 
 protected:
@@ -57,10 +56,10 @@ protected:
 protected:
     BulletMLNode* bulletml_;
 
-	std::vector<BulletMLNode*> topActions_;
+    std::vector<BulletMLNode*> topActions_;
 
     typedef std::vector<BulletMLNode*> MyMap;
-	typedef MyMap BulletMap;
+    typedef MyMap BulletMap;
     typedef MyMap ActionMap;
     typedef MyMap FireMap;
     BulletMap bulletMap_;
@@ -70,22 +69,23 @@ protected:
     bool isHorizontal_;
 
 protected:
-	/// 一時的な導入
-	void setName(const std::string& name) { name_ = name; }
-	std::string name_;
-public:
-	const std::string& getName() const { return name_; }
+    /// 一時的な導入
+    void setName(const std::string& name) { name_ = name; }
+    std::string name_;
 
+public:
+    const std::string& getName() const { return name_; }
 };
 
 template <class Char_>
-std::string BulletMLParser::uc2string(Char_* src, size_t len) {
+std::string BulletMLParser::uc2string(Char_* src, size_t len)
+{
     std::string dst;
     size_t i = 0;
     while (i != len && *src != '\0') {
-		dst += *src;
-		src++;
-		i++;
+        dst += *src;
+        src++;
+        i++;
     }
     return dst;
 }

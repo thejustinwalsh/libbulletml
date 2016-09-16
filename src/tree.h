@@ -20,7 +20,8 @@
  * それの息子以下の世代は全て破壊される。
  */
 template <class C_>
-class BULLETML_API TreeNode {
+class BULLETML_API TreeNode
+{
 public:
     // これをテンプレート引数で差し換えうる設計にしたいのだが
     typedef std::list<C_*> Children;
@@ -28,25 +29,20 @@ public:
     typedef typename Children::const_iterator ConstChildIterator;
 
 public:
-    TreeNode() {
-		releaseDuty_ = false;
-    }
+    TreeNode() { releaseDuty_ = false; }
     virtual ~TreeNode();
 
-    void addChild(C_* c) {
-		c->setParent(dynamic_cast<C_*>(this));
-		children_.push_back(c);
+    void addChild(C_* c)
+    {
+        c->setParent(dynamic_cast<C_*>(this));
+        children_.push_back(c);
     }
-    void setReleaseDuty(bool bl) {
-		releaseDuty_ = bl;
-    }
-    void setParent(C_* c) {
-		parent_ = c;
-    }
+    void setReleaseDuty(bool bl) { releaseDuty_ = bl; }
+    void setParent(C_* c) { parent_ = c; }
 
     ChildIterator childBegin() { return children_.begin(); }
     ChildIterator childEnd() { return children_.end(); }
-	size_t childSize() { return children_.size(); }
+    size_t childSize() { return children_.size(); }
     ConstChildIterator childBegin() const { return children_.begin(); }
     ConstChildIterator childEnd() const { return children_.end(); }
     C_* getParent() { return parent_; }
@@ -58,13 +54,14 @@ private:
 };
 
 template <class C_>
-TreeNode<C_>::~TreeNode() {
+TreeNode<C_>::~TreeNode()
+{
     if (releaseDuty_) {
-		ChildIterator ite;
-		for (ite = children_.begin(); ite != children_.end(); ite++) {
-			(*ite)->setReleaseDuty(true);
-			delete *ite;
-		}
+        ChildIterator ite;
+        for (ite = children_.begin(); ite != children_.end(); ite++) {
+            (*ite)->setReleaseDuty(true);
+            delete *ite;
+        }
     }
 }
 

@@ -9,12 +9,13 @@
 #include <string>
 
 #include "bulletmlcommon.h"
-
+#include "bulletmlparser.h"
 #include "tinyxml/tinyxml.h"
 
 class BulletMLNode;
 
-class BULLETML_API BulletMLParserTinyXML : public BulletMLParser {
+class BULLETML_API BulletMLParserTinyXML : public BulletMLParser
+{
 public:
     BulletMLParserTinyXML(const std::string& filename);
     virtual ~BulletMLParserTinyXML();
@@ -22,7 +23,7 @@ public:
     virtual void parse();
 
 protected:
-	void parseImpl(TiXmlDocument& doc);
+    void parseImpl(TiXmlDocument& doc);
 
 protected:
     void getTree(TiXmlNode* node);
