@@ -6,25 +6,24 @@
 #include <stdexcept>
 
 /// さすがにもうちょっと充実させんとねえ
-class BulletMLError : public std::runtime_error {
+class BULLETML_API BulletMLError : public std::runtime_error {
 public:
-	DECLSPEC BulletMLError(const std::string& msg)
+	BulletMLError(const std::string& msg)
 		: std::runtime_error(msg) {}
 
-	DECLSPEC static void doAssert(const char* str) {
+	static void doAssert(const char* str) {
 		throw BulletMLError(str);
 	}
-	DECLSPEC static void doAssert(const std::string& str) {
+	static void doAssert(const std::string& str) {
 		throw BulletMLError(str);
 	}
-	DECLSPEC static void doAssert(bool t, const char* str) {
+	static void doAssert(bool t, const char* str) {
 		if (!t) throw BulletMLError(str);
 	}
-	DECLSPEC static void doAssert(bool t, const std::string& str) {
+	static void doAssert(bool t, const std::string& str) {
 		if (!t) throw BulletMLError(str);
 	}
 
 };
 
 #endif // ! BULLETMLERROR_H_
-
