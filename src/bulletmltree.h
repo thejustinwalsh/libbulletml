@@ -16,7 +16,7 @@
 #include "formula.h"
 #include "bulletmlcommon.h"
 
-class BulletMLNode : public TreeNode<BulletMLNode> {
+class BULLETML_API BulletMLNode : public TreeNode<BulletMLNode> {
 public:
 	typedef Formula<double> Number;
 	typedef enum { none, aim, absolute, relative, sequence, typeSize } Type;
@@ -35,34 +35,34 @@ public:
     typedef TreeNode<BulletMLNode>::ChildIterator ChildIterator;
 
 public:
-	DECLSPEC explicit BulletMLNode(const std::string& name);
-    DECLSPEC virtual ~BulletMLNode();
+	explicit BulletMLNode(const std::string& name);
+    virtual ~BulletMLNode();
 
-    DECLSPEC Name getName() const { return name_; }
+    Name getName() const { return name_; }
 
-    DECLSPEC void setValue(const std::string& val);
-    DECLSPEC double getValue() const { return val_->value(); }
+    void setValue(const std::string& val);
+    double getValue() const { return val_->value(); }
 
-	DECLSPEC void setType(const std::string& type) { type_ = string2type(type); }
-	DECLSPEC Type getType() const { return type_; }
+	void setType(const std::string& type) { type_ = string2type(type); }
+	Type getType() const { return type_; }
 
-	DECLSPEC void setRefID(int id) { refID_ = id; }
-	DECLSPEC int getRefID() const { return refID_; }
+	void setRefID(int id) { refID_ = id; }
+	int getRefID() const { return refID_; }
 
-    DECLSPEC BulletMLNode* getChild(Name name);
+    BulletMLNode* getChild(Name name);
 /*
 
     template <class OutIte_>
     void getAllChildren(Name name, OutIte_ outIte);
 */
-    DECLSPEC void getAllChildrenVec(Name name, std::vector<BulletMLNode*>& outvec);
+    void getAllChildrenVec(Name name, std::vector<BulletMLNode*>& outvec);
 
 
 
     /// 子孫の中に指定した名前に一致するものがあるかどうか
-    DECLSPEC bool findNode(Name name) const;
+    bool findNode(Name name) const;
 
-    DECLSPEC BulletMLNode* next();
+    BulletMLNode* next();
 
     virtual void dump();
 

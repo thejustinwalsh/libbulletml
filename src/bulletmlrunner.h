@@ -19,16 +19,16 @@ class BulletMLRunnerImpl;
 typedef std::vector<double> BulletMLParameter;
 
 /// BulletMLRunner が状態伝達に使用するクラス
-class BulletMLState {
+class BULLETML_API BulletMLState {
 public:
-	DECLSPEC BulletMLState(BulletMLParser* bulletml,
+	BulletMLState(BulletMLParser* bulletml,
 						   const std::vector<BulletMLNode*>& node,
 						   std::shared_ptr<BulletMLParameter> para)
 		: bulletml_(bulletml), node_(node.begin(), node.end()), para_(para) {}
 
-	DECLSPEC BulletMLParser* getBulletML() { return bulletml_; }
-	DECLSPEC const std::vector<BulletMLNode*>& getNode() const { return node_; }
-	DECLSPEC std::shared_ptr<BulletMLParameter> getParameter() { return para_; }
+	BulletMLParser* getBulletML() { return bulletml_; }
+	const std::vector<BulletMLNode*>& getNode() const { return node_; }
+	std::shared_ptr<BulletMLParameter> getParameter() { return para_; }
 
 private:
 	BulletMLParser* bulletml_;
@@ -48,18 +48,18 @@ private:
  * </pre>
  */
 
-class BulletMLRunner {
+class BULLETML_API BulletMLRunner {
 public:
-	DECLSPEC explicit BulletMLRunner(BulletMLParser* bulletml);
-    DECLSPEC explicit BulletMLRunner(BulletMLState* state);
-    DECLSPEC virtual ~BulletMLRunner();
+	explicit BulletMLRunner(BulletMLParser* bulletml);
+    explicit BulletMLRunner(BulletMLState* state);
+    virtual ~BulletMLRunner();
 
 	/// 実行する
-    DECLSPEC void run();
+    void run();
 
 public:
 	/// 実行が終了しているかどうか
-	DECLSPEC bool isEnd() const;
+	bool isEnd() const;
 
 public:
 	// ----- 絶対実装しなければならない関数群の始まり -----
@@ -68,30 +68,30 @@ public:
 	/**
 	 * @return 角度を度単位で、上方向 0 で時計周りで返す
 	 */
-	DECLSPEC virtual double getBulletDirection() =0;
+	virtual double getBulletDirection() =0;
 	/// この弾から自機を狙う角度を求める
 	/**
 	 * @return 角度を度単位で、上方向 0 で時計周りで返す
 	 */
-	DECLSPEC virtual double getAimDirection() =0;
+	virtual double getAimDirection() =0;
 	/// この弾の速度を求める
-	DECLSPEC virtual double getBulletSpeed() =0;
+	virtual double getBulletSpeed() =0;
 	/// デフォルトの速度を求める
-	DECLSPEC virtual double getDefaultSpeed() =0;
+	virtual double getDefaultSpeed() =0;
 	/// ランクを求める
 	/**
 	 * @return 0 から 1 までの実数
 	 */
-	DECLSPEC virtual double getRank() =0;
+	virtual double getRank() =0;
 	/// action を持たない弾を作る
-	DECLSPEC virtual void createSimpleBullet(double direction, double speed) =0;
+	virtual void createSimpleBullet(double direction, double speed) =0;
 	/// action を持つ弾を作る
 	/**
 	 * @param state
 	 * 新しい弾の BulletMLRunner のコンストラクタに渡すこと。
 	 * もし渡さないのであれば、delete で解放しなければならない。
 	 */
-	DECLSPEC virtual void createBullet(BulletMLState* state,
+	virtual void createBullet(BulletMLState* state,
 									   double direction, double speed) =0;
 	/// 弾の基準となるターンの値を返す、通常はフレーム数
 	/**
@@ -100,42 +100,42 @@ public:
 	 * 負数は許されません。
 	 * xml データ上で、wait と term のオーダーが揃っていれば問題ありません。
 	 */
-	DECLSPEC virtual int getTurn() =0;
+	virtual int getTurn() =0;
 	/// 死ぬ
-	DECLSPEC virtual void doVanish() =0;
+	virtual void doVanish() =0;
 	//@}
 	// ----- 絶対実装しなければならない関数群の終わり -----
 
 	// ----- 必要があれば実装する関数群の始まり -----
    	//@{
 	/// 弾の方向を指定した方向に変更する
-	DECLSPEC virtual void doChangeDirection(double) {}
+	virtual void doChangeDirection(double) {}
 	/// 弾の速度を指定した値に変更する
-	DECLSPEC virtual void doChangeSpeed(double) {}
+	virtual void doChangeSpeed(double) {}
 	/// accel に対するインターフェイス
 	/**
 	 * @todo
 	 * horizontal, vertical の type は未実装です。
 	 * どれも absolute になってしまいます。
 	 */
-	DECLSPEC virtual void doAccelX(double) {}
+	virtual void doAccelX(double) {}
 	/// accel に対するインターフェイス
 	/**
 	 * @todo
 	 * horizontal, vertical の type は未実装です。
 	 * どれも absolute になってしまいます。
 	 */
-	DECLSPEC virtual void doAccelY(double) {}
+	virtual void doAccelY(double) {}
 	/// 弾の速さの X 方向成分を返します
 	/**
 	 * accel を使う場合はオーバーライドして下さい
  	 */
-	DECLSPEC virtual double getBulletSpeedX() { return 0; }
+	virtual double getBulletSpeedX() { return 0; }
 	/// 弾の速さの Y 方向成分を返します
 	/**
 	 * accel を使う場合はオーバーライドして下さい
  	 */
-	DECLSPEC virtual double getBulletSpeedY() { return 0; }
+	virtual double getBulletSpeedY() { return 0; }
     //@}
 	// ----- 必要があれば実装する関数群の終わり -----
 
@@ -143,11 +143,11 @@ public:
 	/**
 	 * 見てのとおり、デフォルトでは std::rand が用いられます。
 	 */
-	DECLSPEC virtual double getRand() { return (double)rand() / RAND_MAX; }
+	virtual double getRand() { return (double)rand() / RAND_MAX; }
 
 private:
 	/// BulletMLRunnerImpl をオーバーライドする場合、これもオーバーライドする
-	DECLSPEC virtual BulletMLRunnerImpl* makeImpl(BulletMLState* state);
+	virtual BulletMLRunnerImpl* makeImpl(BulletMLState* state);
 
 protected:
 	std::vector<BulletMLRunnerImpl*> impl_;

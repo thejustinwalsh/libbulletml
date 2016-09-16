@@ -14,18 +14,18 @@
 
 #include <stdio.h>
 
-class BulletMLParser {
+class BULLETML_API BulletMLParser {
 protected:
     typedef std::vector<std::string> MyAttributes;
     typedef MyAttributes::const_iterator MyAttributeIte;
 
 public:
-    DECLSPEC BulletMLParser();
-    DECLSPEC virtual ~BulletMLParser();
+    BulletMLParser();
+    virtual ~BulletMLParser();
 
 public:
-	DECLSPEC void build();
-    DECLSPEC virtual void parse() =0;
+	void build();
+    virtual void parse() =0;
 
 public:
     /**
@@ -33,17 +33,17 @@ public:
      * ラベルからこれらのみ取れれば良い
      */
     //@{
-    DECLSPEC BulletMLNode* getBulletRef(int id);
-    DECLSPEC BulletMLNode* getActionRef(int id);
-    DECLSPEC BulletMLNode* getFireRef(int id);
+    BulletMLNode* getBulletRef(int id);
+    BulletMLNode* getActionRef(int id);
+    BulletMLNode* getFireRef(int id);
     //@}
 
-	DECLSPEC const std::vector<BulletMLNode*>& getTopActions() const {
+	const std::vector<BulletMLNode*>& getTopActions() const {
 		return topActions_;
 	}
 
-	DECLSPEC void setHorizontal() { isHorizontal_ = true; }
-    DECLSPEC bool isHorizontal() const { return isHorizontal_; }
+	void setHorizontal() { isHorizontal_ = true; }
+    bool isHorizontal() const { return isHorizontal_; }
 
 protected:
     BulletMLNode* addContent(const std::string& name);
@@ -74,7 +74,7 @@ protected:
 	void setName(const std::string& name) { name_ = name; }
 	std::string name_;
 public:
-	DECLSPEC const std::string& getName() const { return name_; }
+	const std::string& getName() const { return name_; }
 
 };
 
