@@ -11,6 +11,7 @@
 #include "bulletmlcommon.h"
 
 #include <vector>
+#include <cstdlib>
 
 class BulletMLParser;
 class BulletMLNode;
