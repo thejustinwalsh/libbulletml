@@ -1071,10 +1071,9 @@ int yyerror(char* s) {
 	return 0;
 }
 
-std::auto_ptr<CalcFormula> calc(const std::string& str) {
+std::unique_ptr<CalcFormula> calc(const std::string& str) {
 	std::string fml = str + '\n';
 	yyinStr = fml.c_str();
 	yyparse();
-	return std::auto_ptr<CalcFormula>(formula);
+	return std::unique_ptr<CalcFormula>(formula);
 }
-

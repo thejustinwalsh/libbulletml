@@ -6,7 +6,6 @@
 #include <vector>
 #include <memory>
 #include <stack>
-#include <boost/smart_ptr.hpp>
 
 class BulletMLRunner;
 class BulletMLState;
@@ -140,16 +139,16 @@ private:
 
 private:
 private:
-    std::auto_ptr<LinearFunc<int, double> > changeDir_;
-    std::auto_ptr<LinearFunc<int, double> > changeSpeed_;
-    std::auto_ptr<LinearFunc<int, double> > accelx_;
-    std::auto_ptr<LinearFunc<int, double> > accely_;
+    std::unique_ptr<LinearFunc<int, double> > changeDir_;
+    std::unique_ptr<LinearFunc<int, double> > changeSpeed_;
+    std::unique_ptr<LinearFunc<int, double> > accelx_;
+    std::unique_ptr<LinearFunc<int, double> > accely_;
 
 protected:
     Validatable<double> spd_, dir_, prevSpd_, prevDir_;
 
     typedef BulletMLParameter Parameters;
-    boost::shared_ptr<Parameters> parameters_;
+    std::shared_ptr<Parameters> parameters_;
 
 protected:
     BulletMLParser* bulletml_;
@@ -171,7 +170,7 @@ protected:
     typedef std::stack<RepeatElem*> RepeatStack;
     RepeatStack repeatStack_;
     typedef std::stack<std::pair<BulletMLNode*,
-								 boost::shared_ptr<Parameters> > > RefStack;
+								 std::shared_ptr<Parameters> > > RefStack;
     RefStack refStack_;
 
     typedef void (BulletMLRunnerImpl::*Method)();

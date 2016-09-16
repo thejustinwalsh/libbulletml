@@ -4,8 +4,6 @@
 #include "bulletmlerror.h"
 #include "formula-variables.h"
 
-#include "auto_ptr_fix.h"
-
 #include <cassert>
 #include <cmath>
 
@@ -164,7 +162,7 @@ void BulletMLRunnerImpl::changes() {
     if (changeDir_.get() != 0) {
 		if (changeDir_->isLast(now)) {
 			runner_->doChangeDirection(changeDir_->getLast());
-			delete auto_ptr_release(changeDir_);
+			changeDir_.reset(nullptr);
 		}
 		else {
 			runner_->doChangeDirection(changeDir_->getValue(now));
@@ -174,7 +172,7 @@ void BulletMLRunnerImpl::changes() {
     if (changeSpeed_.get() != 0) {
 		if (changeSpeed_->isLast(now)) {
 			runner_->doChangeSpeed(changeSpeed_->getLast());
-			delete auto_ptr_release(changeSpeed_);
+			changeSpeed_.reset(nullptr);
 		}
 		else {
 			runner_->doChangeSpeed(changeSpeed_->getValue(now));
@@ -184,7 +182,7 @@ void BulletMLRunnerImpl::changes() {
     if (accelx_.get() != 0) {
 		if (accelx_->isLast(now)) {
 			runner_->doAccelX(accelx_->getLast());
-			delete auto_ptr_release(accelx_);
+			accelx_.reset(nullptr);
 		}
 		else {
 			runner_->doAccelX(accelx_->getValue(now));
@@ -194,7 +192,7 @@ void BulletMLRunnerImpl::changes() {
     if (accely_.get() != 0) {
 		if (accely_->isLast(now)) {
 			runner_->doAccelY(accely_->getLast());
-			delete auto_ptr_release(accely_);
+			accely_.reset(nullptr);
 		}
 		else {
 			runner_->doAccelY(accely_->getValue(now));
@@ -374,7 +372,7 @@ void BulletMLRunnerImpl::runRepeat() {
 }
 
 void BulletMLRunnerImpl::runFireRef() {
-	boost::shared_ptr<Parameters> prevPara = parameters_;
+	std::shared_ptr<Parameters> prevPara = parameters_;
 	parameters_.reset(getParameters());
 
 	refStack_.push(std::make_pair(act_, prevPara));
@@ -382,7 +380,7 @@ void BulletMLRunnerImpl::runFireRef() {
 }
 
 void BulletMLRunnerImpl::runActionRef() {
-	boost::shared_ptr<Parameters> prevPara = parameters_;
+	std::shared_ptr<Parameters> prevPara = parameters_;
 	parameters_.reset(getParameters());
 
 	refStack_.push(std::make_pair(act_, prevPara));
@@ -390,7 +388,7 @@ void BulletMLRunnerImpl::runActionRef() {
 }
 
 void BulletMLRunnerImpl::runBulletRef() {
-	boost::shared_ptr<Parameters> prevPara = parameters_;
+	std::shared_ptr<Parameters> prevPara = parameters_;
 	parameters_.reset(getParameters());
 
 	refStack_.push(std::make_pair(act_, prevPara));
@@ -424,7 +422,7 @@ void BulletMLRunnerImpl::runChangeSpeed() {
 		spd = getNumberContents(spdNode) * (double)term
 			+ runner_->getBulletSpeed();
 	}
-	
+
 
 	calcChangeSpeed(spd, term);
 
@@ -461,9 +459,9 @@ void BulletMLRunnerImpl::calcChangeDirection(double direction, int term,
 	double dirFirst = runner_->getBulletDirection();
 
 	if (seq) {
-		auto_ptr_copy(changeDir_, new LinearFunc<int, double>
+		changeDir_ = new LinearFunc<int, double>
 					  (actTurn_, finalTurn,
-					   dirFirst, dirFirst + direction * term));
+					   dirFirst, dirFirst + direction * term);
 	}
 	else {
 		double dirSpace;
@@ -476,8 +474,8 @@ void BulletMLRunnerImpl::calcChangeDirection(double direction, int term,
 		if (abs(dirSpace1) < abs(dirSpace2)) dirSpace = dirSpace1;
 		else dirSpace = dirSpace2;
 
-		auto_ptr_copy(changeDir_, new LinearFunc<int, double>
-					  (actTurn_, finalTurn, dirFirst, dirFirst + dirSpace));
+		changeDir_ = new LinearFunc<int, double>
+					  (actTurn_, finalTurn, dirFirst, dirFirst + dirSpace);
 	}
 }
 
@@ -486,8 +484,8 @@ void BulletMLRunnerImpl::calcChangeSpeed(double speed, int term) {
 
 	double spdFirst = runner_->getBulletSpeed();
 
-	auto_ptr_copy(changeSpeed_, new LinearFunc<int, double>
-				  (actTurn_, finalTurn, spdFirst, speed));
+	changeSpeed_ = new LinearFunc<int, double>
+				  (actTurn_, finalTurn, spdFirst, speed);
 }
 
 void BulletMLRunnerImpl::calcAccelY(double horizontal, int term,
@@ -508,8 +506,8 @@ void BulletMLRunnerImpl::calcAccelY(double horizontal, int term,
 		finalSpd = horizontal;
 	}
 
-	auto_ptr_copy(accely_, new LinearFunc<int, double>
-				  (actTurn_, finalTurn, firstSpd, finalSpd));
+	accely_ = new LinearFunc<int, double>
+				  (actTurn_, finalTurn, firstSpd, finalSpd);
 }
 
 void BulletMLRunnerImpl::calcAccelX(double vertical, int term,
@@ -530,8 +528,8 @@ void BulletMLRunnerImpl::calcAccelX(double vertical, int term,
 		finalSpd = vertical;
 	}
 
-	auto_ptr_copy(accelx_ ,new LinearFunc<int, double>
-				  (actTurn_, finalTurn, firstSpd, finalSpd));
+	accelx_ = new LinearFunc<int, double>
+				  (actTurn_, finalTurn, firstSpd, finalSpd);
 }
 
 void BulletMLRunnerImpl::runVanish() {
@@ -561,5 +559,3 @@ BulletMLRunnerImpl::Parameters* BulletMLRunnerImpl::getParameters() {
 
 	return para;
 }
-
-	
