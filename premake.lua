@@ -26,4 +26,4 @@ project "libbulletml"
 
   includedirs { "src" }
 
-  files { "src/**.h", "src/**.cpp" }
+  files { "include/**.h", "src/**.h", "src/**.cpp" }
