@@ -56,7 +56,7 @@ project "tests"
   language "C++"
   targetdir "bin/%{cfg.buildcfg}"
 
-  includedirs { "include", "vendor/googletest/googletest/include", "vendor/googletest/googletest" }
+  includedirs { "include", "src", "vendor/googletest/googletest/include", "vendor/googletest/googletest" }
 
   files { "tests/**.cpp", "vendor/googletest/googletest/src/gtest_main.cc", "vendor/googletest/googletest/src/gtest-all.cc" }
 
