@@ -3,6 +3,8 @@
 #include "bulletmlparser.h"
 #include "bulletmltree.h"
 
+#include "tinyxml/tinyxml.h"
+
 #include <string>
 
 BulletMLParserTinyXML::BulletMLParserTinyXML(const std::string& filename)
@@ -58,14 +60,14 @@ void BulletMLParserTinyXML::translateNode(TiXmlNode* node)
     curNode_ = xmlNode;
 }
 
-void BulletMLParserTinyXML::parseImpl(TiXmlDocument& doc)
+void BulletMLParserTinyXML::parseImpl(TiXmlDocument* doc)
 {
-    if (doc.Error()) {
-        throw BulletMLError(doc.Value() + ": " + doc.ErrorDesc());
+    if (doc->Error()) {
+        throw BulletMLError(doc->Value() + ": " + doc->ErrorDesc());
     }
 
     TiXmlNode* node;
-    for (node = doc.FirstChild(); node; node = node->NextSibling()) {
+    for (node = doc->FirstChild(); node; node = node->NextSibling()) {
         if (node->ToElement() != 0) {
             getTree(node);
             break;
@@ -77,5 +79,5 @@ void BulletMLParserTinyXML::parse()
 {
     TiXmlDocument doc(xmlFile_.c_str());
     doc.LoadFile();
-    parseImpl(doc);
+    parseImpl(&doc);
 }

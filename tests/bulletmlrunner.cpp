@@ -2,6 +2,9 @@
 #include "bulletmlparser-tinyxml.h"
 #include "bulletmlrunner.h"
 #include "bulletmlerror.h"
+
+#include "tinyxml/tinyxml.h"
+
 #include "gtest/gtest.h"
 
 namespace
@@ -33,7 +36,7 @@ namespace
                         </bullet>
                       </bulletml>)");
             
-            parseImpl(doc);
+            parseImpl(&doc);
         }
     };
     

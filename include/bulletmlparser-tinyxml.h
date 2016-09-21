@@ -10,7 +10,6 @@
 
 #include "bulletmlcommon.h"
 #include "bulletmlparser.h"
-#include "tinyxml/tinyxml.h"
 
 class BulletMLNode;
 
@@ -23,11 +22,11 @@ public:
     virtual void parse();
 
 protected:
-    void parseImpl(TiXmlDocument& doc);
+    void parseImpl(class TiXmlDocument* doc);
 
 protected:
-    void getTree(TiXmlNode* node);
-    void translateNode(TiXmlNode* node);
+    void getTree(class TiXmlNode* node);
+    void translateNode(class TiXmlNode* node);
 
 private:
     std::string xmlFile_;
