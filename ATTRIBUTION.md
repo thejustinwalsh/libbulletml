@@ -1,8 +1,8 @@
 Sources of Intellectual Property Included in libbulletml
 --------------------------------------------------------
 
-libbulletml is issued by thejustinwalsh LLC under the MIT license above. Below 
-is a list of certain publicly available software that is the source of intellectual
+libbulletml is issued by thejustinwalsh LLC under the MIT contained in the LICENSE file within the root 
+of this repository. Below is a list of certain publicly available software that is the source of intellectual
 property in libbulletml, along with the licensing terms that pertain to those sources of IP. This list is
 for informational purposes only and is not intended to represent an exhaustive
 list of third party contributions to libbulletml.
