@@ -2,9 +2,6 @@
 #include "bulletmlparser-tinyxml.h"
 #include "bulletmlrunner.h"
 #include "bulletmlerror.h"
-
-#include "tinyxml/tinyxml.h"
-
 #include "gtest/gtest.h"
 
 namespace
@@ -13,32 +10,20 @@ namespace
     int terms = 0;
     const int MAX_TERMS = 12000;
     
-    class BulletMLRunnerTestParser : public BulletMLParserTinyXML
-    {
-    public:
-        BulletMLRunnerTestParser() : BulletMLParserTinyXML("") {}
-        
-        virtual void parse() override
-        {
-            TiXmlDocument doc("TestPattern");
-            
-            doc.Parse(R"(<?xml version="1.0"?>
-                      <!DOCTYPE bulletml SYSTEM "bulletmlx.dtd">
-                      <bulletml type="vertical">
-                        <action label="top">
-                          <fire>
-                            <direction type="absolute">180</direction>
-                            <bulletRef label="basic"/>
-                          </fire>
-                        </action>
-                        <bullet label="basic">
-                          <speed>1</speed>
-                        </bullet>
-                      </bulletml>)");
-            
-            parseImpl(&doc);
-        }
-    };
+    const char* XML_DATA = R"(<?xml version="1.0"?>
+        <!DOCTYPE bulletml SYSTEM "bulletmlx.dtd">
+        <bulletml type="vertical">
+            <action label="top">
+                <fire>
+                    <direction type="absolute">180</direction>
+                    <bulletRef label="basic"/>
+                </fire>
+            </action>
+            <bullet label="basic">
+                <speed>1</speed>
+            </bullet>
+        </bulletml>
+    )";
     
     class BulletMLRunnerTest : public ::testing::Test
     {
@@ -51,7 +36,7 @@ namespace
     {
         const std::string NO_ERROR("No Error");
         
-        BulletMLParser* parser = new BulletMLRunnerTestParser();
+        BulletMLParser* parser = new BulletMLParserTinyXML("Test.xml", XML_DATA);
         std::string errorText = NO_ERROR;
         
         try
@@ -125,13 +110,7 @@ namespace
             
             virtual void doVanish() override
             {
-                auto bullet = std::find(bullets.begin(), bullets.end(), this);
-                if (bullets.end() != bullet)
-                {
-                    auto bulletPtr = *bullet;
-                    bullets.erase(bullet);
-                    delete bulletPtr;
-                }
+                
             }
             
         public:
@@ -140,19 +119,30 @@ namespace
             double speed;
         };
         
-        BulletMLParser* parser = new BulletMLRunnerTestParser();
+        BulletMLParser* parser = new BulletMLParserTinyXML("Test.xml", XML_DATA);
         parser->build();
         
         BulletMLRunner* runner = new TestRunner(parser, 0, 0.0, 1.0);
+        bullets.push_back(runner);
+        
         while (terms++ < MAX_TERMS)
         {
-            runner->run();
+            for (auto it = bullets.begin(); it != bullets.end(); ++it)
+            {
+                auto bullet = *it;
+                bullet->run();
+                
+                if (bullet->isEnd())
+                {
+                    it = bullets.erase(it);
+                    delete bullet;
+                }
+            }
         }
         
         for (auto bullet : bullets) { delete bullet; }
         bullets.clear();
         
-        delete runner;
         delete parser;
     }
 }

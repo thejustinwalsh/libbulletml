@@ -16,7 +16,7 @@ class BulletMLNode;
 class BULLETML_API BulletMLParserTinyXML : public BulletMLParser
 {
 public:
-    BulletMLParserTinyXML(const std::string& filename);
+    BulletMLParserTinyXML(const std::string& filename, const char* filedata = nullptr);
     virtual ~BulletMLParserTinyXML();
 
     virtual void parse();
@@ -29,6 +29,7 @@ protected:
     void translateNode(class TiXmlNode* node);
 
 private:
+    bool loadFromFile;
     std::string xmlFile_;
     BulletMLNode* curNode_;
 };
