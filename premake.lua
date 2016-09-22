@@ -30,6 +30,7 @@ project "libbulletml"
   kind "StaticLib"
   language "C++"
   targetdir "bin/%{cfg.buildcfg}"
+  targetname "bulletml"
 
   includedirs { "include", "src" }
 
@@ -41,6 +42,7 @@ project "libbulletml-shared"
   kind "SharedLib"
   language "C++"
   targetdir "bin/%{cfg.buildcfg}"
+  targetname "bulletml-shared"
 
   defines { "BULLETML_SHARED_LIB" }
 
