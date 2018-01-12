@@ -87,7 +87,7 @@ double BulletMLRunnerImpl::getSpeed(BulletMLNode* spdNode)
 }
 
 BulletMLRunnerImpl::BulletMLRunnerImpl(BulletMLState* state, BulletMLRunner* runner)
-    : bulletml_(state->getBulletML())
+    : bulletml_(state->getParser())
     , node_(state->getNode().begin(), state->getNode().end())
     , actIte_(0)
     , end_(false)

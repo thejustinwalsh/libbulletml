@@ -3,6 +3,7 @@
 *.xcworkspace
 *.xcodeproj
 *.vcxproj*
+.vs/
 Makefile
 *.make
 
