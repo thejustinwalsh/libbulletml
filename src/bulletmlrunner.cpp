@@ -30,7 +30,7 @@ void BulletMLRunner::run() {
     /*
     for_each(_impl.begin(), _impl.end(), mem_fun(&BulletMLRunnerImpl::run));
     */
-    for (std::vector<BulletMLRunnerImpl *>::const_iterator it = m_impl.begin(); it != m_impl.end(); ++it) {
+    for (vector<BulletMLRunnerImpl *>::const_iterator it = m_impl.begin(); it != m_impl.end(); ++it) {
         (*it)->run();
     }
 }

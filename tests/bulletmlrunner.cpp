@@ -124,6 +124,7 @@ namespace {
                 if (bullet->isEnd()) {
                     it = bullets.erase(it);
                     delete bullet;
+                    break;
                 }
             }
         }
