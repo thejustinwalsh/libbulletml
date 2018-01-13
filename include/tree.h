@@ -46,6 +46,7 @@ public:
         c->setParent(dynamic_cast<TC *>(this));
         m_children.push_back(c);
     }
+
     void setReleaseDuty(bool bl) { m_releaseDuty = bl; }
     void setParent(TC* c) { m_parent = c; }
 
