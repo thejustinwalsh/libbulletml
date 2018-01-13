@@ -1,94 +1,106 @@
 /// 数式クラス
+/// Formula Class
 
 #ifndef FORMULA_H_
 #define FORMULA_H_
 
 #include "bulletmlcommon.h"
 
-template <typename Val_>
-class BULLETML_API AbstractNumber
-{
+template <typename TVal>
+class BULLETML_API AbstractNumber {
 public:
-    virtual Val_ value() const = 0;
+    virtual TVal value() const = 0;
     virtual ~AbstractNumber() {}
 };
 
-template <typename Val_>
-class BULLETML_API Number : public AbstractNumber<Val_>
-{
+template <typename TVal>
+class BULLETML_API Number : public AbstractNumber<TVal> {
 public:
-    explicit Number(Val_ val) : val_(val) {}
+    explicit Number(TVal val) : m_val(val) {
+    }
 
-    virtual Val_ value() const { return val_; }
+    virtual TVal value() const { return m_val; }
 
 private:
-    Val_ val_;
+    TVal m_val;
 };
 
-typedef enum { op_null = 0, op_add, op_sub, op_mul, op_div } Operator;
+typedef enum {
+    op_null = 0,
+    op_add,
+    op_sub,
+    op_mul,
+    op_div
+} Operator;
 
-template <typename Val_>
-class BULLETML_API Formula : public AbstractNumber<Val_>
-{
+template <typename TVal>
+class BULLETML_API Formula : public AbstractNumber<TVal> {
 private:
-    typedef AbstractNumber<Val_> ANumber;
+    typedef AbstractNumber<TVal> ANumber;
 
 public:
-    virtual ~Formula()
-    {
-        delete lhs_;
-        delete rhs_;
+    virtual ~Formula() {
+        delete m_lhs;
+        delete m_rhs;
     }
 
     /// public だけど呼ばないで下さい。
+    /// Please do not just call public.
     /**
      * @todo yacc の使いかたを調べて、これを private に
+     *       Investigate how to use yacc and make it private
      */
     //@{
-    explicit Formula(ANumber* val) : lhs_(val), rhs_(0), op_(op_null), headsub_(false) {}
-    Formula(ANumber* lhs, Operator op, ANumber* rhs)
-        : lhs_(lhs), rhs_(rhs), op_(op), headsub_(false)
-    {
+    explicit Formula(ANumber *val) :
+        m_lhs(val),
+        m_rhs(0),
+        m_op(op_null),
+        m_headsub(false) {
     }
 
-    Formula* setHeadSub()
-    {
-        headsub_ = true;
+    Formula(ANumber *lhs, Operator op, ANumber *rhs) :
+        m_lhs(lhs),
+        m_rhs(rhs),
+        m_op(op),
+        m_headsub(false) {
+    }
+
+    Formula *setHeadSub() {
+        m_headsub = true;
         return this;
     }
     //@}
 
-    virtual Val_ value() const
-    {
-        if (headsub_)
+    virtual TVal value() const {
+        if (m_headsub) {
             return -valueBeforeHeadSub();
-        else
+        } else {
             return valueBeforeHeadSub();
+        }
     }
 
 private:
-    Val_ valueBeforeHeadSub() const
-    {
-        switch (op_) {
+    TVal valueBeforeHeadSub() const {
+        switch (m_op) {
         case op_null:
-            return lhs_->value();
+            return m_lhs->value();
         case op_add:
-            return lhs_->value() + rhs_->value();
+            return m_lhs->value() + m_rhs->value();
         case op_sub:
-            return lhs_->value() - rhs_->value();
+            return m_lhs->value() - m_rhs->value();
         case op_mul:
-            return lhs_->value() * rhs_->value();
+            return m_lhs->value() * m_rhs->value();
         case op_div:
-            return lhs_->value() / rhs_->value();
+            return m_lhs->value() / m_rhs->value();
         default:
             return 0; // avoid warning
         }
     }
 
 private:
-    ANumber *lhs_, *rhs_;
-    Operator op_;
-    bool headsub_;
+    ANumber *m_lhs, *m_rhs;
+    Operator m_op;
+    bool m_headsub;
 };
 
 #endif // ! FORMULA_H_
