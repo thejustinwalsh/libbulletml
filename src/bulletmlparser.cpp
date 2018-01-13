@@ -3,156 +3,151 @@
 
 #include <map>
 
-namespace
-{
+using namespace std;
 
+namespace {
     /// 内部のみで使用するクラス。
-    class IDPool
-    {
+    /// Class to only use internally.
+    class IDPool {
     public:
-        static int getID(BulletMLNode::Name domain, const std::string& key)
-        {
-            KeyToID& kti = map_[domain];
-            KeyToID::iterator ite = kti.find(key);
-            if (ite == kti.end()) {
-                int id = maxMap_[domain]++;
-                map_[domain][key] = id;
+        static int getID(BulletMLNode::Name domain, const string &key) {
+            KeyToID &kti = g_map[domain];
+            KeyToID::iterator it = kti.find(key);
+            if (it == kti.end()) {
+                int id = g_maxMap[domain]++;
+                g_map[domain][key] = id;
                 return id;
-            }
-            else {
-                return ite->second;
+            } else {
+                return it->second;
             }
         }
-        static void init()
-        {
-            map_.insert(std::make_pair(BulletMLNode::bullet, KeyToID()));
-            map_.insert(std::make_pair(BulletMLNode::action, KeyToID()));
-            map_.insert(std::make_pair(BulletMLNode::fire, KeyToID()));
-            maxMap_.insert(std::make_pair(BulletMLNode::bullet, 0));
-            maxMap_.insert(std::make_pair(BulletMLNode::action, 0));
-            maxMap_.insert(std::make_pair(BulletMLNode::fire, 0));
+
+        static void init() {
+            g_map.insert(make_pair(BulletMLNode::bullet, KeyToID()));
+            g_map.insert(make_pair(BulletMLNode::action, KeyToID()));
+            g_map.insert(make_pair(BulletMLNode::fire, KeyToID()));
+            g_maxMap.insert(make_pair(BulletMLNode::bullet, 0));
+            g_maxMap.insert(make_pair(BulletMLNode::action, 0));
+            g_maxMap.insert(make_pair(BulletMLNode::fire, 0));
         }
-        static void quit()
-        {
-            map_.clear();
-            maxMap_.clear();
+
+        static void quit() {
+            g_map.clear();
+            g_maxMap.clear();
         }
 
     private:
-        typedef std::map<std::string, unsigned int> KeyToID;
-        typedef std::map<BulletMLNode::Name, KeyToID> DomainToIDMap;
-        typedef std::map<BulletMLNode::Name, int> DomainToMaxID;
-        static DomainToIDMap map_;
-        static DomainToMaxID maxMap_;
+        typedef map<string, unsigned int> KeyToID;
+        typedef map<BulletMLNode::Name, KeyToID> DomainToIDMap;
+        typedef map<BulletMLNode::Name, int> DomainToMaxID;
+        static DomainToIDMap g_map;
+        static DomainToMaxID g_maxMap;
     };
 }
 
-IDPool::DomainToIDMap IDPool::map_;
-IDPool::DomainToMaxID IDPool::maxMap_;
+IDPool::DomainToIDMap IDPool::g_map;
+IDPool::DomainToMaxID IDPool::g_maxMap;
 
-BulletMLParser::BulletMLParser() : bulletml_(0), isHorizontal_(false) {}
-
-BulletMLParser::~BulletMLParser()
-{
-    // BulletMLNode はルートノードだけ破壊すれば良い
-    delete bulletml_;
+BulletMLParser::BulletMLParser() :
+    m_bulletml(0),
+    m_isHorizontal(false) {
 }
 
-void BulletMLParser::build()
-{
+BulletMLParser::~BulletMLParser() {
+    // BulletMLNode はルートノードだけ破壊すれば良い
+    // BulletMLNode only needs to destroy the root node
+    delete m_bulletml;
+}
+
+void BulletMLParser::build() {
     IDPool::init();
     parse();
     IDPool::quit();
 }
 
-BulletMLNode* BulletMLParser::getBulletRef(int id)
-{
-    BulletMLError::doAssert((int) bulletMap_.size() > id && bulletMap_[id] != 0,
-                            "bulletRef key doesn't exist.");
-    return bulletMap_[id];
+BulletMLNode *BulletMLParser::getBulletRef(int id) {
+    BulletMLError::doAssert((int)m_bulletMap.size() > id &&
+        m_bulletMap[id] != 0, "bulletRef key doesn't exist.");
+    return m_bulletMap[id];
 }
 
-BulletMLNode* BulletMLParser::getActionRef(int id)
-{
-    BulletMLError::doAssert((int) actionMap_.size() > id && actionMap_[id] != 0,
-                            "actionRef key doesn't exist.");
-    return actionMap_[id];
+BulletMLNode *BulletMLParser::getActionRef(int id) {
+    BulletMLError::doAssert((int)m_actionMap.size() > id &&
+        m_actionMap[id] != 0, "actionRef key doesn't exist.");
+    return m_actionMap[id];
 }
 
 BulletMLNode* BulletMLParser::getFireRef(int id)
 {
-    BulletMLError::doAssert((int) fireMap_.size() > id && fireMap_[id] != 0,
-                            "fireRef key doesn't exist.");
-    return fireMap_[id];
+    BulletMLError::doAssert((int)m_fireMap.size() > id &&
+        m_fireMap[id] != 0, "fireRef key doesn't exist.");
+    return m_fireMap[id];
 }
 
-BulletMLNode* BulletMLParser::addContent(const std::string& name)
-{
+BulletMLNode *BulletMLParser::addContent(const string &name) {
     // ルートノードは別処理
+    // Root node is handled differently
     if (name == "bulletml") {
-        bulletml_ = new BulletMLNode(name);
-        return bulletml_;
+        m_bulletml = new BulletMLNode(name);
+        return m_bulletml;
     }
-    BulletMLError::doAssert(bulletml_ != 0, "<bulletml> doesn't come.");
+    BulletMLError::doAssert(m_bulletml != 0, "<bulletml> doesn't exist.");
 
     return new BulletMLNode(name);
 }
 
-void BulletMLParser::addAttribute(const MyAttributes& attr, BulletMLNode* elem)
-{
+void BulletMLParser::addAttribute(const ParserAttributes &attr, BulletMLNode *elem) {
     if (!attr.empty()) {
-        MyAttributeIte ite = attr.begin();
-        while (ite != attr.end()) {
-            const std::string key(*ite);
-            ite++;
-            const std::string val(*ite);
-            ite++;
-            if (key == "type")
+        ParserAttributeIter it = attr.begin();
+        while (it != attr.end()) {
+            const string key(*it);
+            it++;
+            const string val(*it);
+            it++;
+
+            if (key == "type") {
                 elem->setType(val);
-            else if (key == "label") {
+            }  else if (key == "label") {
                 BulletMLNode::Name name = elem->getName();
                 BulletMLNode::Name domain;
                 if (name == BulletMLNode::bulletRef) {
                     domain = BulletMLNode::bullet;
-                }
-                else if (name == BulletMLNode::actionRef) {
+                } else if (name == BulletMLNode::actionRef) {
                     domain = BulletMLNode::action;
-                }
-                else if (name == BulletMLNode::fireRef) {
+                } else if (name == BulletMLNode::fireRef) {
                     domain = BulletMLNode::fire;
-                }
-                else {
+                } else {
                     domain = name;
                 }
 
                 int id = IDPool::getID(domain, val);
                 if (name == BulletMLNode::bullet) {
-                    if ((int) bulletMap_.size() <= id) {
-                        bulletMap_.resize(id + 1, 0);
+                    if ((int)m_bulletMap.size() <= id) {
+                        m_bulletMap.resize(id + 1, 0);
                     }
-                    bulletMap_[id] = elem;
-                }
-                else if (name == BulletMLNode::action) {
-                    if ((int) actionMap_.size() <= id) {
-                        actionMap_.resize(id + 1, 0);
+                    m_bulletMap[id] = elem;
+                } else if (name == BulletMLNode::action) {
+                    if ((int)m_actionMap.size() <= id) {
+                        m_actionMap.resize(id + 1, 0);
                     }
-                    actionMap_[id] = elem;
-                }
-                else if (name == BulletMLNode::fire) {
-                    if ((int) fireMap_.size() <= id) fireMap_.resize(id + 1, 0);
-                    fireMap_[id] = elem;
-                }
-                else if (name == BulletMLNode::bulletRef || name == BulletMLNode::actionRef ||
-                         name == BulletMLNode::fireRef) {
+                    m_actionMap[id] = elem;
+                } else if (name == BulletMLNode::fire) {
+                    if ((int)m_fireMap.size() <= id) {
+                        m_fireMap.resize(id + 1, 0);
+                    }
+                    m_fireMap[id] = elem;
+                } else if (name == BulletMLNode::bulletRef ||
+                    name == BulletMLNode::actionRef ||
+                    name == BulletMLNode::fireRef) {
                     elem->setRefID(id);
-                }
-                else {
+                } else {
                     BulletMLError::doAssert("he can't have attribute \"label\".");
                 }
 
-                if (elem->getName() == BulletMLNode::action && val.length() >= 3 &&
+                if (elem->getName() == BulletMLNode::action &&
+                    val.length() >= 3 &&
                     val.substr(0, 3) == "top") {
-                    topActions_.push_back(elem);
+                    m_topActions.push_back(elem);
                 }
             }
         }

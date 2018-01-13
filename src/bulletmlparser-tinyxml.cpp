@@ -53,7 +53,7 @@ void BulletMLParserTinyXML::translateNode(TiXmlNode* node)
         }
     }
     else {
-        MyAttributes mattr;
+        ParserAttributes mattr;
         TiXmlAttribute* attr;
         for (attr = elem->FirstAttribute(); attr; attr = attr->Next()) {
             mattr.push_back(attr->Name());
