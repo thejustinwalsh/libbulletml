@@ -91,7 +91,7 @@ public:
     /// Whether there is any match in the descendants with the specified name
     bool findNode(Name name) const;
 
-    BulletMLNode* next();
+    BulletMLNode *next();
 
     virtual void dump();
 

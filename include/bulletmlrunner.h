@@ -27,10 +27,10 @@ typedef std::vector<double> BulletMLParameter;
 /// Class used by BulletMLRunner for state propagation
 class BULLETML_API BulletMLState {
 public:
-    BulletMLState(BulletMLParser *bulletml, const std::vector<BulletMLNode *> &node, std::shared_ptr<BulletMLParameter> para) :
+    BulletMLState(BulletMLParser *bulletml, const std::vector<BulletMLNode *> &node, std::shared_ptr<BulletMLParameter> param) :
 		m_bulletml(bulletml),
 		m_node(node.begin(), node.end()),
-		m_parameter(para) {
+		m_parameter(param) {
 	}
 
     BulletMLParser *getBulletML() { return m_bulletml; }
