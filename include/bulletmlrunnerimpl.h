@@ -16,25 +16,25 @@ typedef std::vector<double> BulletMLParameter;
 template<class TC>
 class Validatable {
 public:
-    Validatable() : _isValidated(false) {
+    Validatable() : m_isValidated(false) {
 	}
 
-    bool isValidate() const { return _isValidated; }
+    bool isValidate() const { return m_isValidated; }
 
-    void validate() { _isValidated = true; }
-    void invalidate() { _isValidated = false; }
+    void validate() { m_isValidated = true; }
+    void invalidate() { m_isValidated = false; }
 
-    operator TC&() { return _val; }
+    operator TC&() { return m_val; }
 
     TC &operator=(const TC &rhs) {
-        _isValidated = true;
-        _val = rhs;
+        m_isValidated = true;
+        m_val = rhs;
         return *this;
     }
 
 protected:
-    TC _val;
-    bool _isValidated;
+    TC m_val;
+    bool m_isValidated;
 };
 
 /// xyの初期値・終値から任意のxに対するyの線形補間を得るクラス

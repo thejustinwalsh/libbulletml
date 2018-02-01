@@ -4,6 +4,7 @@
 *.xcodeproj
 *.vcxproj*
 .vs/
+x64/
 Makefile
 *.make
 

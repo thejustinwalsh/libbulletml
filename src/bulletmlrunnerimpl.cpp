@@ -36,12 +36,12 @@ BulletMLRunnerImpl::BulletMLRunnerImpl(BulletMLState *state, BulletMLRunner *run
 
     delete state;
 
-    for (vector<BulletMLNode*>::iterator it = m_node.begin(); it != m_node.end(); ++it) {
+    for (vector<BulletMLNode *>::iterator it = m_node.begin(); it != m_node.end(); ++it) {
         (*it)->setParent(0);
     }
 
     /*
-    for_each(node_.begin(), node_.end(), bind2nd(mem_fun(&BulletMLNode::setParent), 0));
+    for_each(m_node.begin(), m_node.end(), bind2nd(mem_fun(&BulletMLNode::setParent), 0));
     */
     m_actionTurn = -1;
     m_action = m_node[0];
@@ -183,17 +183,16 @@ void BulletMLRunnerImpl::runBullet() {
         m_action->getChild(BulletMLNode::actionRef) == 0) {
         m_runner->createSimpleBullet(m_direction, m_speed);
     } else {
-        vector<BulletMLNode *> acts;
-        m_action->getAllChildrenVec(BulletMLNode::action, acts);
-        m_action->getAllChildrenVec(BulletMLNode::actionRef, acts);
+        vector<BulletMLNode *> actions;
+        m_action->getAllChildrenVec(BulletMLNode::action, actions);
+        m_action->getAllChildrenVec(BulletMLNode::actionRef, actions);
 
         /*
-        act_->getAllChildren(BulletMLNode::action, back_inserter(acts));
-        act_->getAllChildren(BulletMLNode::actionRef, back_inserter(acts));
+        m_action->getAllChildren(BulletMLNode::action, back_inserter(acts));
+        m_action->getAllChildren(BulletMLNode::actionRef, back_inserter(acts));
         */
 
-        BulletMLState *state = new BulletMLState(m_bulletml, acts, m_parameters);
-
+        BulletMLState *state = new BulletMLState(m_bulletml, actions, m_parameters);
         m_runner->createBullet(state, m_direction, m_speed);
     }
 
@@ -387,7 +386,8 @@ void BulletMLRunnerImpl::runSub() {
 
         // ref から戻る
         // Return from ref
-        if (m_action == 0 && prev->getParent() != 0 &&
+        if (m_action == 0 &&
+            prev->getParent() != 0 &&
             prev->getParent()->getName() == BulletMLNode::bulletml) {
             assert(!m_refStack.empty());
             prev = m_refStack.top().first;

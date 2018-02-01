@@ -77,8 +77,7 @@ BulletMLNode *BulletMLParser::getActionRef(int id) {
     return m_actionMap[id];
 }
 
-BulletMLNode* BulletMLParser::getFireRef(int id)
-{
+BulletMLNode *BulletMLParser::getFireRef(int id) {
     BulletMLError::doAssert((int)m_fireMap.size() > id &&
         m_fireMap[id] != 0, "fireRef key doesn't exist.");
     return m_fireMap[id];
@@ -141,7 +140,7 @@ void BulletMLParser::addAttribute(const ParserAttributes &attr, BulletMLNode *el
                     name == BulletMLNode::fireRef) {
                     elem->setRefID(id);
                 } else {
-                    BulletMLError::doAssert("he can't have attribute \"label\".");
+                    BulletMLError::doAssert("this cannot have the attribute \"label\".");
                 }
 
                 if (elem->getName() == BulletMLNode::action &&
