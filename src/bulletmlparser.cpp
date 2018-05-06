@@ -97,8 +97,8 @@ BulletMLNode *BulletMLParser::addContent(const string &name) {
 
 void BulletMLParser::addAttribute(const ParserAttributes &attr, BulletMLNode *elem) {
     if (!attr.empty()) {
-        ParserAttributeIter it = attr.begin();
-        while (it != attr.end()) {
+        ParserAttributeIter it = attr.cbegin();
+        while (it != attr.cend()) {
             const string key(*it);
             it++;
             const string val(*it);

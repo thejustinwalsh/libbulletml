@@ -30,7 +30,7 @@ void BulletMLRunner::run() {
     /*
     for_each(_impl.begin(), _impl.end(), mem_fun(&BulletMLRunnerImpl::run));
     */
-    for (vector<BulletMLRunnerImpl *>::const_iterator it = m_impl.begin(); it != m_impl.end(); ++it) {
+    for (vector<BulletMLRunnerImpl *>::const_iterator it = m_impl.cbegin(); it != m_impl.cend(); ++it) {
         (*it)->run();
     }
 }
@@ -39,7 +39,7 @@ bool BulletMLRunner::isEnd() const {
     /*
     return find_if(_impl.begin(), _impl.end(), not1(mem_fun(&BulletMLRunnerImpl::isEnd))) == _impl.end();
     */
-    for (vector<BulletMLRunnerImpl *>::const_iterator it = m_impl.begin(); it != m_impl.end(); ++it) {
+    for (vector<BulletMLRunnerImpl *>::const_iterator it = m_impl.cbegin(); it != m_impl.cend(); ++it) {
 		if ((*it)->isEnd()) {
 			return true;
 		}

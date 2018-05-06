@@ -113,7 +113,7 @@ void BulletMLNode::dump() {
     cout << "<" << name2string[m_name];
     /*
     AttributeMap::const_iterator it;
-    for (it = m_attributes.begin(); it != m_attributes.end(); it++) {
+    for (it = m_attributes.cbegin(); it != m_attributes.cend(); it++) {
 	cout << " " << it->first << "=" << it->second;
     }
     */
