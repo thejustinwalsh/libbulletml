@@ -49,7 +49,7 @@ IDPool::DomainToIDMap IDPool::g_map;
 IDPool::DomainToMaxID IDPool::g_maxMap;
 
 BulletMLParser::BulletMLParser() :
-    m_bulletml(0),
+    m_bulletml(nullptr),
     m_isHorizontal(false) {
 }
 
@@ -67,19 +67,19 @@ void BulletMLParser::build() {
 
 BulletMLNode *BulletMLParser::getBulletRef(int id) {
     BulletMLError::doAssert((int)m_bulletMap.size() > id &&
-        m_bulletMap[id] != 0, "bulletRef key doesn't exist.");
+        m_bulletMap[id] != nullptr, "bulletRef key doesn't exist.");
     return m_bulletMap[id];
 }
 
 BulletMLNode *BulletMLParser::getActionRef(int id) {
     BulletMLError::doAssert((int)m_actionMap.size() > id &&
-        m_actionMap[id] != 0, "actionRef key doesn't exist.");
+        m_actionMap[id] != nullptr, "actionRef key doesn't exist.");
     return m_actionMap[id];
 }
 
 BulletMLNode *BulletMLParser::getFireRef(int id) {
     BulletMLError::doAssert((int)m_fireMap.size() > id &&
-        m_fireMap[id] != 0, "fireRef key doesn't exist.");
+        m_fireMap[id] != nullptr, "fireRef key doesn't exist.");
     return m_fireMap[id];
 }
 
@@ -90,7 +90,7 @@ BulletMLNode *BulletMLParser::addContent(const string &name) {
         m_bulletml = new BulletMLNode(name);
         return m_bulletml;
     }
-    BulletMLError::doAssert(m_bulletml != 0, "<bulletml> doesn't exist.");
+    BulletMLError::doAssert(m_bulletml != nullptr, "<bulletml> doesn't exist.");
 
     return new BulletMLNode(name);
 }

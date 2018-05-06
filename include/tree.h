@@ -53,8 +53,8 @@ public:
     ChildIterator childBegin() { return m_children.begin(); }
     ChildIterator childEnd() { return m_children.end(); }
     size_t childSize() { return m_children.size(); }
-    ConstChildIterator childBegin() const { return m_children.begin(); }
-    ConstChildIterator childEnd() const { return m_children.end(); }
+    ConstChildIterator childBegin() const { return m_children.cbegin(); }
+    ConstChildIterator childEnd() const { return m_children.cend(); }
     TC *getParent() { return m_parent; }
 
 private:

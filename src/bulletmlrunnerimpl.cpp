@@ -30,14 +30,14 @@ BulletMLRunnerImpl::BulletMLRunnerImpl(BulletMLState *state, BulletMLRunner *run
     m_actionIter(0),
     m_end(false),
     m_runner(runner) {
-    if (state->getParameter().get() != 0) {
+    if (state->getParameter().get() != nullptr) {
         m_parameters = state->getParameter();
     }
 
-    delete state;
+    //delete state;
 
     for (vector<BulletMLNode *>::iterator it = m_node.begin(); it != m_node.end(); ++it) {
-        (*it)->setParent(0);
+        (*it)->setParent(nullptr);
     }
 
     /*
@@ -65,12 +65,12 @@ void BulletMLRunnerImpl::run() {
 
     // 最後の wait, change系を待つだけ
     // Just wait for the last wait, change system
-    if (m_action == 0) {
+    if (m_action == nullptr) {
         if (!isTurnEnd()) {
-            if (m_changeDir.get() == 0 &&
-                m_changeSpeed.get() == 0 &&
-                m_accelX.get() == 0 &&
-                m_accelY.get() == 0) {
+            if (m_changeDir.get() == nullptr &&
+                m_changeSpeed.get() == nullptr &&
+                m_accelX.get() == nullptr &&
+                m_accelY.get() == nullptr) {
                 m_end = true;
             }
         }
@@ -84,7 +84,7 @@ void BulletMLRunnerImpl::run() {
 
     runSub();
 
-    if (m_action == 0) {
+    if (m_action == nullptr) {
         m_actionIter++;
         if (m_node.size() != m_actionIter) {
             m_action = m_node[m_actionIter];
@@ -179,8 +179,8 @@ void BulletMLRunnerImpl::runBullet() {
         m_prevDirection = m_direction = m_runner->getAimDirection();
     }
 
-    if (m_action->getChild(BulletMLNode::action) == 0 &&
-        m_action->getChild(BulletMLNode::actionRef) == 0) {
+    if (m_action->getChild(BulletMLNode::action) == nullptr &&
+        m_action->getChild(BulletMLNode::actionRef) == nullptr) {
         m_runner->createSimpleBullet(m_direction, m_speed);
     } else {
         vector<BulletMLNode *> actions;
@@ -196,12 +196,12 @@ void BulletMLRunnerImpl::runBullet() {
         m_runner->createBullet(state, m_direction, m_speed);
     }
 
-    m_action = 0;
+    m_action = nullptr;
 }
 
 void BulletMLRunnerImpl::runAction() {
     if (m_action->childSize() == 0) {
-        m_action = 0;
+        m_action = nullptr;
     } else {
         m_action = *m_action->childBegin();
     }
@@ -214,10 +214,10 @@ void BulletMLRunnerImpl::runFire() {
     setDirection();
 
     BulletMLNode *bullet = m_action->getChild(BulletMLNode::bullet);
-    if (bullet == 0) {
+    if (bullet == nullptr) {
         bullet = m_action->getChild(BulletMLNode::bulletRef);
     }
-    BulletMLError::doAssert(bullet != 0, "<fire> must have contents bullet or bulletRef");
+    BulletMLError::doAssert(bullet != nullptr, "<fire> must have contents bullet or bulletRef");
 
     m_action = bullet;
 }
@@ -226,22 +226,22 @@ void BulletMLRunnerImpl::runWait() {
     int frame = static_cast<int>(getNumberContents(m_action));
     doWait(frame);
 
-    m_action = 0;
+    m_action = nullptr;
 }
 
 void BulletMLRunnerImpl::runRepeat() {
     const BulletMLNode *times = m_action->getChild(BulletMLNode::times);
-    if (times == 0) {
+    if (times == nullptr) {
         return;
     }
 
     int timesNum = static_cast<int>(getNumberContents(times));
 
     BulletMLNode *action = m_action->getChild(BulletMLNode::action);
-    if (action == 0) {
+    if (action == nullptr) {
         action = m_action->getChild(BulletMLNode::actionRef);
     }
-    BulletMLError::doAssert(action != 0, "repeat elem must have contents action or actionRef");
+    BulletMLError::doAssert(action != nullptr, "repeat elem must have contents action or actionRef");
 
     m_repeatStack.push(new RepeatElem(0, timesNum, action));
 
@@ -286,7 +286,7 @@ void BulletMLRunnerImpl::runChangeDirection() {
 
     calcChangeDirection(dir, term, type == BulletMLNode::sequence);
 
-    m_action = 0;
+    m_action = nullptr;
 }
 
 void BulletMLRunnerImpl::runChangeSpeed() {
@@ -303,7 +303,7 @@ void BulletMLRunnerImpl::runChangeSpeed() {
 
     calcChangeSpeed(spd, term);
 
-    m_action = 0;
+    m_action = nullptr;
 }
 
 void BulletMLRunnerImpl::runAccel() {
@@ -312,34 +312,34 @@ void BulletMLRunnerImpl::runAccel() {
     BulletMLNode *vnode = m_action->getChild(BulletMLNode::vertical);
 
     if (m_bulletml->isHorizontal()) {
-        if (vnode != 0) {
+        if (vnode != nullptr) {
             calcAccelX(getNumberContents(vnode), term, vnode->getType());
         }
-        if (hnode != 0) {
+        if (hnode != nullptr) {
             calcAccelY(-getNumberContents(hnode), term, hnode->getType());
         }
     } else {
-        if (hnode != 0) {
+        if (hnode != nullptr) {
             calcAccelX(getNumberContents(hnode), term, hnode->getType());
         }
-        if (vnode != 0) {
+        if (vnode != nullptr) {
             calcAccelY(getNumberContents(vnode), term, vnode->getType());
         }
     }
 
-    m_action = 0;
+    m_action = nullptr;
 }
 
 void BulletMLRunnerImpl::runVanish() {
     m_runner->doVanish();
 
-    m_action = 0;
+    m_action = nullptr;
 }
 
 void BulletMLRunnerImpl::changes() {
     int now = m_runner->getTurn();
 
-    if (m_changeDir.get() != 0) {
+    if (m_changeDir.get() != nullptr) {
         if (m_changeDir->isLast(now)) {
             m_runner->doChangeDirection(m_changeDir->getLast());
             m_changeDir.reset(nullptr);
@@ -348,7 +348,7 @@ void BulletMLRunnerImpl::changes() {
         }
     }
 
-    if (m_changeSpeed.get() != 0) {
+    if (m_changeSpeed.get() != nullptr) {
         if (m_changeSpeed->isLast(now)) {
             m_runner->doChangeSpeed(m_changeSpeed->getLast());
             m_changeSpeed.reset(nullptr);
@@ -357,7 +357,7 @@ void BulletMLRunnerImpl::changes() {
         }
     }
 
-    if (m_accelX.get() != 0) {
+    if (m_accelX.get() != nullptr) {
         if (m_accelX->isLast(now)) {
             m_runner->doAccelX(m_accelX->getLast());
             m_accelX.reset(nullptr);
@@ -366,7 +366,7 @@ void BulletMLRunnerImpl::changes() {
         }
     }
 
-    if (m_accelY.get() != 0) {
+    if (m_accelY.get() != nullptr) {
         if (m_accelY->isLast(now)) {
             m_runner->doAccelY(m_accelY->getLast());
             m_accelY.reset(nullptr);
@@ -379,15 +379,15 @@ void BulletMLRunnerImpl::changes() {
 void BulletMLRunnerImpl::runSub() {
     // 見たくもないコードだね。
     // Code that you don't want to see.
-    while (m_action != 0 && !isTurnEnd()) {
+    while (m_action != nullptr && !isTurnEnd()) {
         BulletMLNode *prev = m_action;
         Method fp = m_commandMap[m_action->getName()];
         (this->*fp)();
 
         // ref から戻る
         // Return from ref
-        if (m_action == 0 &&
-            prev->getParent() != 0 &&
+        if (m_action == nullptr &&
+            prev->getParent() != nullptr &&
             prev->getParent()->getName() == BulletMLNode::bulletml) {
             assert(!m_refStack.empty());
             prev = m_refStack.top().first;
@@ -397,14 +397,14 @@ void BulletMLRunnerImpl::runSub() {
 
         // 次の node を探す
         // Find the next node
-        if (m_action == 0) {
+        if (m_action == nullptr) {
             m_action = prev->next();
         }
 
         // 上に遡って次の node を探す
         // Go up and search for the next node
-        while (m_action == 0) {
-            if (prev->getParent() != 0 &&
+        while (m_action == nullptr) {
+            if (prev->getParent() != nullptr &&
                 prev->getParent()->getName() == BulletMLNode::repeat) {
                 RepeatElem *rep = m_repeatStack.top();
                 rep->ite++;
@@ -418,13 +418,13 @@ void BulletMLRunnerImpl::runSub() {
             }
 
             m_action = prev->getParent();
-            if (m_action == 0) {
+            if (m_action == nullptr) {
                 break;
             }
 
             prev = m_action;
 
-            if (prev->getParent() != 0 &&
+            if (prev->getParent() != nullptr &&
                 prev->getParent()->getName() == BulletMLNode::bulletml) {
                 assert(!m_refStack.empty());
                 prev = m_action = m_refStack.top().first;
@@ -450,7 +450,7 @@ void BulletMLRunnerImpl::doWait(int frame) {
 
 void BulletMLRunnerImpl::setDirection() {
     BulletMLNode *dir = m_action->getChild(BulletMLNode::direction);
-    if (dir == 0) {
+    if (dir == nullptr) {
         return;
     }
 
@@ -459,7 +459,7 @@ void BulletMLRunnerImpl::setDirection() {
 
 void BulletMLRunnerImpl::setSpeed() {
     BulletMLNode *spd = m_action->getChild(BulletMLNode::speed);
-    if (spd == 0) {
+    if (spd == nullptr) {
         return;
     }
 
@@ -550,7 +550,7 @@ double BulletMLRunnerImpl::getDirection(BulletMLNode *dirNode, bool prevChange) 
 }
 
 BulletMLRunnerImpl::Parameters *BulletMLRunnerImpl::getParameters() {
-    Parameters *params = 0;
+    Parameters *params = nullptr;
     bool first = true;
 
     BulletMLNode::ChildIterator it;

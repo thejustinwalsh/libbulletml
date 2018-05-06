@@ -53,7 +53,7 @@ public:
     //@{
     explicit Formula(ANumber *val) :
         m_lhs(val),
-        m_rhs(0),
+        m_rhs(nullptr),
         m_op(op_null),
         m_headsub(false) {
     }

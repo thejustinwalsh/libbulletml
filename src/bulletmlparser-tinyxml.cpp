@@ -11,7 +11,7 @@ using namespace std;
 
 BulletMLParserTinyXML::BulletMLParserTinyXML(const string &filename, const char *filedata) :
     m_loadFromFile(true),
-    m_curNode(0) {
+    m_curNode(nullptr) {
     setName(filename);
     
     if (filedata) {
@@ -42,7 +42,7 @@ void BulletMLParserTinyXML::parseImpl(TiXmlDocument *doc) {
 
     TiXmlNode *node;
     for (node = doc->FirstChild(); node; node = node->NextSibling()) {
-        if (node->ToElement() != 0) {
+        if (node->ToElement() != nullptr) {
             getTree(node);
             break;
         }
@@ -50,7 +50,7 @@ void BulletMLParserTinyXML::parseImpl(TiXmlDocument *doc) {
 }
 
 void BulletMLParserTinyXML::getTree(TiXmlNode *node) {
-    if (node->ToComment() != 0) {
+    if (node->ToComment() != nullptr) {
         return;
     }
     translateNode(node);
@@ -58,7 +58,7 @@ void BulletMLParserTinyXML::getTree(TiXmlNode *node) {
     TiXmlNode *child;
     for (child = node->FirstChild(); child; child = child->NextSibling()) {
         TiXmlText *text;
-        if ((text = child->ToText()) != 0) {
+        if ((text = child->ToText()) != nullptr) {
             m_curNode->setValue(text->Value());
             break;
         }
@@ -71,7 +71,7 @@ void BulletMLParserTinyXML::getTree(TiXmlNode *node) {
 
 void BulletMLParserTinyXML::translateNode(TiXmlNode *node) {
     TiXmlElement *elem = node->ToElement();
-    assert(elem != 0);
+    assert(elem != nullptr);
 
     BulletMLNode *xmlNode = addContent(elem->Value());
 
@@ -91,7 +91,7 @@ void BulletMLParserTinyXML::translateNode(TiXmlNode *node) {
         }
         addAttribute(mattr, xmlNode);
 
-        if (m_curNode != 0) {
+        if (m_curNode != nullptr) {
             m_curNode->addChild(xmlNode);
         }
     }

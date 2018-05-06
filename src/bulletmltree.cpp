@@ -134,7 +134,7 @@ BulletMLNode *BulletMLNode::getChild(Name name) {
             return *it;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 bool BulletMLNode::findNode(Name name) const {
@@ -154,15 +154,15 @@ bool BulletMLNode::findNode(Name name) const {
 
 BulletMLNode *BulletMLNode::next() {
     BulletMLNode *parent = getParent();
-    if (parent == 0) {
-        return 0;
+    if (parent == nullptr) {
+        return nullptr;
     }
 
     ChildIterator it = find(parent->childBegin(), parent->childEnd(), this);
     BulletMLError::doAssert(it != parent->childEnd(), m_name + ": not found");
     it++;
     if (it == parent->childEnd()) {
-        return 0;
+        return nullptr;
     } else {
         return *it;
     }
