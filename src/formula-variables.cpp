@@ -1,8 +1,7 @@
 #include "formula-variables.h"
 
-namespace Variables
-{
+namespace Variables {
     double rank;
-    std::vector<double>* parameters;
-    BulletMLRunner* runner;
+    std::vector<double> *parameters;
+    BulletMLRunner *runner;
 }

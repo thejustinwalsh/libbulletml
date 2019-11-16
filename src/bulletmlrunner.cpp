@@ -4,55 +4,49 @@
 #include "bulletmlrunnerimpl.h"
 #include "formula-variables.h"
 
-BulletMLRunner::BulletMLRunner(BulletMLParser* bulletml)
-{
-    const std::vector<BulletMLNode*>& acts = bulletml->getTopActions();
-    for (size_t i = 0; i < acts.size(); i++) {
-        std::vector<BulletMLNode*> act;
-        act.push_back(acts[i]);
-        BulletMLState* state =
-            new BulletMLState(bulletml, act, std::shared_ptr<BulletMLParameter>());
-        impl_.push_back(makeImpl(state));
+using namespace std;
+
+BulletMLRunner::BulletMLRunner(BulletMLParser *bulletml) {
+    const vector<BulletMLNode *> &actions = bulletml->getTopActions();
+    for (size_t i = 0; i < actions.size(); i++) {
+        vector<BulletMLNode *> action;
+        action.push_back(actions[i]);
+        BulletMLState *state = new BulletMLState(bulletml, action, shared_ptr<BulletMLParameter>());
+        m_impl.push_back(makeImpl(state));
     }
 }
 
-BulletMLRunner::BulletMLRunner(BulletMLState* state) { impl_.push_back(makeImpl(state)); }
+BulletMLRunner::BulletMLRunner(BulletMLState *state) {
+	m_impl.push_back(makeImpl(state));
+}
 
-BulletMLRunner::~BulletMLRunner()
-{
-    for (size_t i = 0; i < impl_.size(); i++) {
-        delete impl_[i];
+BulletMLRunner::~BulletMLRunner() {
+    for (size_t i = 0; i < m_impl.size(); i++) {
+        delete m_impl[i];
     }
 }
 
-void BulletMLRunner::run()
-{
+void BulletMLRunner::run() {
     /*
-            std::for_each(impl_.begin(), impl_.end(),
-                                      std::mem_fun(&BulletMLRunnerImpl::run));
+    for_each(_impl.begin(), _impl.end(), mem_fun(&BulletMLRunnerImpl::run));
     */
-    for (std::vector<BulletMLRunnerImpl*>::const_iterator ite = impl_.begin(); ite != impl_.end();
-         ++ite) {
-        (*ite)->run();
+    for (vector<BulletMLRunnerImpl *>::const_iterator it = m_impl.cbegin(); it != m_impl.cend(); ++it) {
+        (*it)->run();
     }
 }
 
-bool BulletMLRunner::isEnd() const
-{
+bool BulletMLRunner::isEnd() const {
     /*
-            return
-                    std::find_if(impl_.begin(), impl_.end(),
-                                             std::not1(std::mem_fun(&BulletMLRunnerImpl::isEnd)))
-                    == impl_.end();
+    return find_if(_impl.begin(), _impl.end(), not1(mem_fun(&BulletMLRunnerImpl::isEnd))) == _impl.end();
     */
-    for (std::vector<BulletMLRunnerImpl*>::const_iterator ite = impl_.begin(); ite != impl_.end();
-         ++ite) {
-        if ((*ite)->isEnd()) return true;
+    for (vector<BulletMLRunnerImpl *>::const_iterator it = m_impl.cbegin(); it != m_impl.cend(); ++it) {
+		if ((*it)->isEnd()) {
+			return true;
+		}
     }
     return false;
 }
 
-BulletMLRunnerImpl* BulletMLRunner::makeImpl(BulletMLState* state)
-{
+BulletMLRunnerImpl *BulletMLRunner::makeImpl(BulletMLState *state) {
     return new BulletMLRunnerImpl(state, this);
 }
