@@ -63,4 +63,7 @@ project "tests"
   files { "tests/**.cpp", "vendor/googletest/googletest/src/gtest_main.cc", "vendor/googletest/googletest/src/gtest-all.cc" }
 
   links { "libbulletml" }
+    
+  filter { "action:gmake*" }
+    links { "pthread" }
 end

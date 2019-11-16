@@ -8,6 +8,7 @@ typedef double NumType;
 
 #include <cctype>
 #include <cmath>
+#include <cstring> 
 
 #include <sstream>
 #include <vector>

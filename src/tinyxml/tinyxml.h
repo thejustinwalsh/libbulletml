@@ -25,6 +25,7 @@ distribution.
 #ifndef TINYXML_INCLUDED
 #define TINYXML_INCLUDED
 
+#include <cstring>
 #include <string>
 #include <stdio.h>
 #include <assert.h>
