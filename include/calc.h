@@ -7,6 +7,6 @@
 #include <memory>
 #include <string>
 
-BULLETML_API std::unique_ptr<Formula<double>> calc(const std::string& str);
+BULLETML_API std::unique_ptr<Formula<double>> calc(const std::string &str);
 
 #endif // CALC_H_

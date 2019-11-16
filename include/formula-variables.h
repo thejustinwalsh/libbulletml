@@ -8,44 +8,41 @@
 #include <cstdlib>
 #include <vector>
 
-namespace Variables
-{
+namespace Variables {
     BULLETML_API extern double rank;
-    BULLETML_API extern std::vector<double>* parameters;
-    BULLETML_API extern BulletMLRunner* runner;
+    BULLETML_API extern std::vector<double> *parameters;
+    BULLETML_API extern BulletMLRunner *runner;
 }
 
-template <typename Val_>
-class BULLETML_API Random : public AbstractNumber<Val_>
-{
+template <typename TVal>
+class BULLETML_API Random : public AbstractNumber<TVal> {
 public:
-    virtual Val_ value() const { return Variables::runner->getRand(); }
+    virtual TVal value() const { return Variables::runner->getRand(); }
 };
 
-template <typename Val_>
-class BULLETML_API Rank : public AbstractNumber<Val_>
-{
+template <typename TVal>
+class BULLETML_API Rank : public AbstractNumber<TVal> {
 public:
-    virtual Val_ value() const { return Variables::rank; }
+    virtual TVal value() const { return Variables::rank; }
 };
 
-template <typename Val_>
-class BULLETML_API Param : public AbstractNumber<Val_>
-{
+template <typename TVal>
+class BULLETML_API Param : public AbstractNumber<TVal> {
 public:
-    explicit Param(int id) : id_(id) {}
-    virtual Val_ value() const
-    {
-        if (Variables::parameters && id_ < Variables::parameters->size()) {
-            return (*Variables::parameters)[id_];
-        }
-        else {
+    explicit Param(int id) : m_id(id) {
+    }
+
+    virtual TVal value() const {
+        if (Variables::parameters &&
+            m_id < Variables::parameters->size()) {
+            return (*Variables::parameters)[m_id];
+        } else {
             return 1;
         }
     }
 
 private:
-    int id_;
+    int m_id;
 };
 
 #endif // ! FORMULA_VARIABLE_H_

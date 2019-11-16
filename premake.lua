@@ -53,7 +53,7 @@ project "libbulletml-shared"
 
 -- Test Suite (googletest)
 if (_OPTIONS["with-tests"]) then
-project "tests"
+project "libbulletml-tests"
   kind "ConsoleApp"
   language "C++"
   targetdir "bin/%{cfg.buildcfg}"
