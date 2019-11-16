@@ -94,6 +94,7 @@ typedef double NumType;
 #include <cctype>
 #include <cmath>
 
+#include <string>
 #include <sstream>
 #include <vector>
 
