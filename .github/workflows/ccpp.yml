@@ -13,3 +13,5 @@ jobs:
       run: ./setup.sh --with-tests
     - name: make
       run: make
+    - name: test
+      run: ./bin/Debug/tests
