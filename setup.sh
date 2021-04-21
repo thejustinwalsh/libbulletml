@@ -44,13 +44,15 @@ if ! [ -e premake.tar.gz ]; then
     curl -L -o premake.tar.gz https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-macosx.tar.gz
   elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     curl -L -o premake.tar.gz https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-linux.tar.gz
-  elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-    echo "ERROR: MINGW currently not supported"
+  elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] || [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    curl -L -o premake.zip https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-windows.zip
   fi
 
   echo "Extracting premake binaries..."
   if [ -s premake.tar.gz ]; then
     tar -xvzf premake.tar.gz
+  elif [ -s premake.zip ]; then
+    unzip premake.zip
   else
     echo "ERROR: premake archive does not exist"
   fi
@@ -61,6 +63,8 @@ if [ "$(uname)" == "Darwin" ]; then
     ./premake5 --file=../premake.lua xcode4 $WITH_TESTS
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     ./premake5 --file=../premake.lua gmake $WITH_TESTS
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] || [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    ./premake5.exe --file=../premake.lua gmake $WITH_TESTS
 fi
 
 popd

@@ -8,8 +8,13 @@ To provide a clean easy to build copy of libBulletML using modern C++ with minim
 libBulletML uses premake to generate project files for building the library. Follow the instructions for your platform below.
 
 - Windows
-  - Double click and run setup.bat from explorer
-  - *or* from the repository root run `setup.bat` in a command console
+  - Visual Studio 2015 or later
+    - Double click and run setup.bat from explorer
+    - *or* from the repository root run `setup.bat` in a command console
+  - MSYS2 MinGW
+    - Open MSYS2 MinGW 64-bit or 32-bit terminal
+    - Install unzip: `pacman -S unzip`
+    - From the repository root run `./setup.sh`
 - MacOS
   - Double click and run setup.command from finder
   - *or* from the repository root run `./setup.sh` in terminal
