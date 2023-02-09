@@ -8,7 +8,7 @@ REM Remove existing premake archive
 if exist "premake.zip" del /F/Q premake.zip
 
 REM Download premake
-powershell -Command "(New-Object Net.WebClient).DownloadFile('https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-windows.zip', 'premake.zip')"
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-windows.zip', 'premake.zip')"
 
 REM Extract premake
 powershell -Command "Expand-Archive -Path %cd%\premake.zip -DestinationPath %cd% -Force;"
