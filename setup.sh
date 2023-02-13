@@ -41,11 +41,11 @@ fi
 if ! [ -e premake.tar.gz ]; then
   echo "Downloading premake binaries..."
   if [ "$(uname)" == "Darwin" ]; then
-    curl -L -o premake.tar.gz https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-macosx.tar.gz
+    curl -L -o premake.tar.gz https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-macosx.tar.gz
   elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-    curl -L -o premake.tar.gz https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-linux.tar.gz
+    curl -L -o premake.tar.gz https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-linux.tar.gz
   elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] || [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    curl -L -o premake.zip https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-windows.zip
+    curl -L -o premake.zip https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-windows.zip
   fi
 
   echo "Extracting premake binaries..."
